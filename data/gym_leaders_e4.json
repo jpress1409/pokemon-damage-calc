@@ -1,0 +1,733 @@
+{
+  "Brilliant Diamond": {
+    "gym_leaders": {
+      "Roark": [
+        {
+          "name": "Geodude",
+          "type": ["Rock"],
+          "level": 12,
+          "attack": 55,
+          "special_attack": 15,
+          "defense": 35,
+          "special_defense": 35,
+          "speed": 20,
+          "ability": "Sturdy",
+          "moves": ["Tackle", "Defense Curl", "Mud Sport"]
+        },
+        {
+          "name": "Onix",
+          "type": ["Rock", "Ground"],
+          "level": 14,
+          "attack": 45,
+          "special_attack": 30,
+          "defense": 160,
+          "special_defense": 45,
+          "speed": 70,
+          "ability": "Rock Head",
+          "moves": ["Tackle", "Harden", "Rock Throw", "Bind"]
+        }
+      ],
+      "Gardenia": [
+        {
+          "name": "Cherubi",
+          "type": ["Grass"],
+          "level": 19,
+          "attack": 35,
+          "special_attack": 62,
+          "defense": 35,
+          "special_defense": 35,
+          "speed": 35,
+          "ability": "Chlorophyll",
+          "moves": ["Tackle", "Growth", "Aromatherapy"]
+        },
+        {
+          "name": "Turtwig",
+          "type": ["Grass"],
+          "level": 21,
+          "attack": 68,
+          "special_attack": 25,
+          "defense": 55,
+          "special_defense": 35,
+          "speed": 31,
+          "ability": "Overgrow",
+          "moves": ["Tackle", "Withdraw", "Razor Leaf", "Curse"]
+        },
+        {
+          "name": "Gloom",
+          "type": ["Grass", "Poison"],
+          "level": 19,
+          "attack": 65,
+          "special_attack": 60,
+          "defense": 55,
+          "special_defense": 50,
+          "speed": 40,
+          "ability": "Chlorophyll",
+          "moves": ["Acid", "Aromatherapy", "Stun Spore"]
+        }
+      ],
+      "Maylene": [
+        {
+          "name": "Meditite",
+          "type": ["Fighting", "Psychic"],
+          "level": 27,
+          "attack": 60,
+          "special_attack": 35,
+          "defense": 35,
+          "special_defense": 35,
+          "speed": 40,
+          "ability": "Pure Power",
+          "moves": ["Meditate", "Confusion", "Detect", "High Jump Kick"]
+        },
+        {
+          "name": "Machoke",
+          "type": ["Fighting"],
+          "level": 30,
+          "attack": 80,
+          "special_attack": 35,
+          "defense": 50,
+          "special_defense": 35,
+          "speed": 45,
+          "ability": "Guts",
+          "moves": ["Low Sweep", "Seismic Toss", "Focus Energy", "Karate Chop"]
+        }
+      ],
+      "Crasher Wake": [
+        {
+          "name": "Buizel",
+          "type": ["Water"],
+          "level": 27,
+          "attack": 55,
+          "special_attack": 40,
+          "defense": 35,
+          "special_defense": 30,
+          "speed": 85,
+          "ability": "Swift Swim",
+          "moves": ["Water Gun", "Quick Attack", "Sonic Boom"]
+        },
+        {
+          "name": "Floatzel",
+          "type": ["Water"],
+          "level": 30,
+          "attack": 65,
+          "special_attack": 50,
+          "defense": 50,
+          "special_defense": 50,
+          "speed": 115,
+          "ability": "Swift Swim",
+          "moves": ["Water Pulse", "Quick Attack", "Sonic Boom"]
+        }
+      ],
+      "Fantina": [
+        {
+          "name": "Duskull",
+          "type": ["Ghost"],
+          "level": 32,
+          "attack": 40,
+          "special_attack": 30,
+          "defense": 55,
+          "special_defense": 55,
+          "speed": 30,
+          "ability": "Levitate",
+          "moves": ["Astonish", "Night Shade", "Confuse Ray", "Will-O-Wisp"]
+        },
+        {
+          "name": "Mismagius",
+          "type": ["Ghost"],
+          "level": 36,
+          "attack": 60,
+          "special_attack": 105,
+          "defense": 60,
+          "special_defense": 105,
+          "speed": 105,
+          "ability": "Levitate",
+          "moves": ["Astonish", "Confuse Ray", "Magical Leaf", "Shadow Ball"]
+        }
+      ],
+      "Byron": [
+        {
+          "name": "Magnemite",
+          "type": ["Electric", "Steel"],
+          "level": 36,
+          "attack": 35,
+          "special_attack": 95,
+          "defense": 70,
+          "special_defense": 70,
+          "speed": 45,
+          "ability": "Magnet Pull",
+          "moves": ["Tackle", "Magnet Bomb", "Sonic Boom", "Supersonic"]
+        },
+        {
+          "name": "Steelix",
+          "type": ["Steel", "Ground"],
+          "level": 39,
+          "attack": 75,
+          "special_attack": 55,
+          "defense": 200,
+          "special_defense": 65,
+          "speed": 30,
+          "ability": "Sturdy",
+          "moves": ["Iron Tail", "Screech", "Sandstorm", "Rock Slide"]
+        }
+      ],
+      "Candice": [
+        {
+          "name": "Snover",
+          "type": ["Ice", "Grass"],
+          "level": 47,
+          "attack": 50,
+          "special_attack": 60,
+          "defense": 60,
+          "special_defense": 60,
+          "speed": 40,
+          "ability": "Snow Warning",
+          "moves": ["Icy Wind", "Leech Seed", "Wood Hammer", "Blizzard"]
+        },
+        {
+          "name": "Sneasel",
+          "type": ["Dark", "Ice"],
+          "level": 48,
+          "attack": 95,
+          "special_attack": 35,
+          "defense": 55,
+          "special_defense": 35,
+          "speed": 115,
+          "ability": "Inner Focus",
+          "moves": ["Faint Attack", "Ice Punch", "Screech", "Agility"]
+        },
+        {
+          "name": "Abomasnow",
+          "type": ["Ice", "Grass"],
+          "level": 50,
+          "attack": 92,
+          "special_attack": 92,
+          "defense": 80,
+          "special_defense": 80,
+          "speed": 60,
+          "ability": "Snow Warning",
+          "moves": ["Blizzard", "Wood Hammer", "Leech Seed", "Icy Wind"]
+        }
+      ],
+      "Volkner": [
+        {
+          "name": "Raichu",
+          "type": ["Electric"],
+          "level": 49,
+          "attack": 90,
+          "special_attack": 90,
+          "defense": 55,
+          "special_defense": 50,
+          "speed": 110,
+          "ability": "Static",
+          "moves": ["Thunderbolt", "Quick Attack", "Iron Tail", "Nasty Plot"]
+        },
+        {
+          "name": "Electivire",
+          "type": ["Electric"],
+          "level": 50,
+          "attack": 123,
+          "special_attack": 95,
+          "defense": 67,
+          "special_defense": 85,
+          "speed": 95,
+          "ability": "Motor Drive",
+          "moves": ["Thunderbolt", "Cross Chop", "Ice Punch", "Flamethrower"]
+        },
+        {
+          "name": "Luxray",
+          "type": ["Electric"],
+          "level": 48,
+          "attack": 120,
+          "special_attack": 95,
+          "defense": 79,
+          "special_defense": 79,
+          "speed": 70,
+          "ability": "Intimidate",
+          "moves": ["Thunderbolt", "Crunch", "Ice Fang", "Swagger"]
+        }
+      ]
+    },
+    "elite_four": {
+      "Aaron": [
+        {
+          "name": "Dustox",
+          "type": [
+            "Bug",
+            "Poison"
+          ],
+          "level": 53,
+          "attack": 50,
+          "special_attack": 50,
+          "defense": 50,
+          "special_defense": 50,
+          "speed": 50,
+          "ability": "Shield Dust",
+          "moves": [
+            "Toxic",
+            "Bug Buzz",
+            "Moonlight",
+            "Light Screen"
+          ]
+        },
+        {
+          "name": "Beautifly",
+          "type": [
+            "Bug",
+            "Flying"
+          ],
+          "level": 53,
+          "attack": 50,
+          "special_attack": 90,
+          "defense": 50,
+          "special_defense": 50,
+          "speed": 65,
+          "ability": "Swarm",
+          "moves": [
+            "Bug Buzz",
+            "Shadow Ball",
+            "Psychic",
+            "Quiver Dance"
+          ]
+        },
+        {
+          "name": "Vespiquen",
+          "type": [
+            "Bug",
+            "Flying"
+          ],
+          "level": 54,
+          "attack": 80,
+          "special_attack": 80,
+          "defense": 102,
+          "special_defense": 80,
+          "speed": 40,
+          "ability": "Unnerve",
+          "moves": [
+            "Acrobatics",
+            "Attack Order",
+            "Aerial Ace",
+            "Defend Order"
+          ]
+        },
+        {
+          "name": "Heracross",
+          "type": [
+            "Bug",
+            "Fighting"
+          ],
+          "level": 54,
+          "attack": 125,
+          "special_attack": 40,
+          "defense": 75,
+          "special_defense": 95,
+          "speed": 85,
+          "ability": "Guts",
+          "moves": [
+            "Earthquake",
+            "Rock Slide",
+            "Facade",
+            "Brick Break"
+          ]
+        },
+        {
+          "name": "Drapion",
+          "type": [
+            "Poison",
+            "Dark"
+          ],
+          "level": 57,
+          "attack": 90,
+          "special_attack": 60,
+          "defense": 110,
+          "special_defense": 75,
+          "speed": 95,
+          "ability": "Sniper",
+          "moves": [
+            "Cross Poison",
+            "Night Slash",
+            "Earthquake",
+            "X-Scissor"
+          ]
+        }
+      ],
+      "Bertha": [
+        {
+          "name": "Quagsire",
+          "type": [
+            "Water",
+            "Ground"
+          ],
+          "level": 55,
+          "attack": 85,
+          "special_attack": 65,
+          "defense": 85,
+          "special_defense": 65,
+          "speed": 35,
+          "ability": "Water Absorb",
+          "moves": [
+            "Recover",
+            "Toxic",
+            "Earthquake",
+            "Surf"
+          ]
+        },
+        {
+          "name": "Sudowoodo",
+          "type": [
+            "Rock"
+          ],
+          "level": 56,
+          "attack": 100,
+          "special_attack": 30,
+          "defense": 115,
+          "special_defense": 65,
+          "speed": 30,
+          "ability": "Rock Head",
+          "moves": [
+            "Double-Edge",
+            "Head Smash",
+            "Sucker Punch",
+            "Low Kick"
+          ]
+        },
+        {
+          "name": "Golem",
+          "type": [
+            "Rock",
+            "Ground"
+          ],
+          "level": 56,
+          "attack": 100,
+          "special_attack": 60,
+          "defense": 130,
+          "special_defense": 55,
+          "speed": 45,
+          "ability": "Sturdy",
+          "moves": [
+            "Rock Polish",
+            "Heavy Slam",
+            "Earthquake",
+            "Stone Edge"
+          ]
+        },
+        {
+          "name": "Whiscash",
+          "type": [
+            "Water",
+            "Ground"
+          ],
+          "level": 55,
+          "attack": 100,
+          "special_attack": 85,
+          "defense": 70,
+          "special_defense": 60,
+          "speed": 60,
+          "ability": "Hydration",
+          "moves": [
+            "Bulldoze",
+            "Ice Beam",
+            "Belch",
+            "Hydro Pump"
+          ]
+        },
+        {
+          "name": "Hippowdon",
+          "type": [
+            "Ground"
+          ],
+          "level": 59,
+          "attack": 112,
+          "special_attack": 68,
+          "defense": 118,
+          "special_defense": 72,
+          "speed": 47,
+          "ability": "Sand Stream",
+          "moves": [
+            "Ice Fang",
+            "Earthquake",
+            "Crunch",
+            "Rest"
+          ]
+        }
+      ],
+      "Flint": [
+        {
+          "name": "Rapidash",
+          "type": [
+            "Fire"
+          ],
+          "level": 58,
+          "attack": 100,
+          "special_attack": 50,
+          "defense": 70,
+          "special_defense": 50,
+          "speed": 105,
+          "ability": "Flame Body",
+          "moves": [
+            "Flame Wheel",
+            "Hypnosis",
+            "Bounce",
+            "Agility"
+          ]
+        },
+        {
+          "name": "Steelix",
+          "type": [
+            "Steel",
+            "Ground"
+          ],
+          "level": 57,
+          "attack": 85,
+          "special_attack": 55,
+          "defense": 200,
+          "special_defense": 65,
+          "speed": 30,
+          "ability": "Sturdy",
+          "moves": [
+            "Iron Tail",
+            "Earthquake",
+            "Stealth Rock",
+            "Crunch"
+          ]
+        },
+        {
+          "name": "Drifblim",
+          "type": [
+            "Ghost",
+            "Flying"
+          ],
+          "level": 58,
+          "attack": 50,
+          "special_attack": 90,
+          "defense": 44,
+          "special_defense": 54,
+          "speed": 80,
+          "ability": "Aftermath",
+          "moves": [
+            "Shadow Ball",
+            "Minimize",
+            "Will-O-Wisp",
+            "Baton Pass"
+          ]
+        },
+        {
+          "name": "Lopunny",
+          "type": [
+            "Normal",
+            "Fighting"
+          ],
+          "level": 57,
+          "attack": 76,
+          "special_attack": 54,
+          "defense": 44,
+          "special_defense": 56,
+          "speed": 105,
+          "ability": "Limber",
+          "moves": [
+            "High Jump Kick",
+            "Return",
+            "Ice Punch",
+            "Fake Out"
+          ]
+        },
+        {
+          "name": "Infernape",
+          "type": [
+            "Fire",
+            "Fighting"
+          ],
+          "level": 61,
+          "attack": 124,
+          "special_attack": 104,
+          "defense": 71,
+          "special_defense": 71,
+          "speed": 108,
+          "ability": "Blaze",
+          "moves": [
+            "Flamethrower",
+            "Close Combat",
+            "Nasty Plot",
+            "Thunder Punch"
+          ]
+        }
+      ],
+      "Lucian": [
+        {
+          "name": "Mr. Mime",
+          "type": [
+            "Psychic",
+            "Fairy"
+          ],
+          "level": 59,
+          "attack": 45,
+          "special_attack": 100,
+          "defense": 65,
+          "special_defense": 90,
+          "speed": 90,
+          "ability": "Filter",
+          "moves": [
+            "Psychic",
+            "Reflect",
+            "Light Screen",
+            "Dazzling Gleam"
+          ]
+        },
+        {
+          "name": "Girafarig",
+          "type": [
+            "Normal",
+            "Psychic"
+          ],
+          "level": 59,
+          "attack": 80,
+          "special_attack": 90,
+          "defense": 65,
+          "special_defense": 65,
+          "speed": 85,
+          "ability": "Inner Focus",
+          "moves": [
+            "Psychic",
+            "Crunch",
+            "Calm Mind",
+            "Agility"
+          ]
+        },
+        {
+          "name": "Medicham",
+          "type": [
+            "Fighting",
+            "Psychic"
+          ],
+          "level": 60,
+          "attack": 60,
+          "special_attack": 60,
+          "defense": 60,
+          "special_defense": 60,
+          "speed": 60,
+          "ability": "Pure Power",
+          "moves": [
+            "High Jump Kick",
+            "Psychic",
+            "Zen Headbutt",
+            "Ice Punch"
+          ]
+        },
+        {
+          "name": "Alakazam",
+          "type": [
+            "Psychic"
+          ],
+          "level": 60,
+          "attack": 50,
+          "special_attack": 135,
+          "defense": 45,
+          "special_defense": 95,
+          "speed": 120,
+          "ability": "Synchronize",
+          "moves": [
+            "Psychic",
+            "Focus Blast",
+            "Shadow Ball",
+            "Energy Ball"
+          ]
+        },
+        {
+          "name": "Bronzong",
+          "type": [
+            "Steel",
+            "Psychic"
+          ],
+          "level": 63,
+          "attack": 89,
+          "special_attack": 79,
+          "defense": 116,
+          "special_defense": 116,
+          "speed": 33,
+          "ability": "Levitate",
+          "moves": [
+            "Psychic",
+            "Gyro Ball",
+            "Trick Room",
+            "Earthquake"
+          ]
+        }
+      ]
+    },
+      "champion": {
+      "Cynthia": [
+        {
+          "name": "Spiritomb",
+          "type": ["Ghost", "Dark"],
+          "level": 61,
+          "attack": 92,
+          "special_attack": 92,
+          "defense": 108,
+          "special_defense": 108,
+          "speed": 35,
+          "ability": "Pressure",
+          "moves": ["Shadow Ball", "Dark Pulse", "Psychic", "Sucker Punch"]
+        },
+        {
+          "name": "Roserade",
+          "type": ["Grass", "Poison"],
+          "level": 60,
+          "attack": 60,
+          "special_attack": 125,
+          "defense": 65,
+          "special_defense": 105,
+          "speed": 90,
+          "ability": "Poison Point",
+          "moves": ["Dazzling Gleam", "Shadow Ball", "Sludge Bomb", "Energy Ball"]
+        },
+        {
+          "name": "Gastrodon",
+          "type": ["Water", "Ground"],
+          "level": 60,
+          "attack": 83,
+          "special_attack": 92,
+          "defense": 68,
+          "special_defense": 82,
+          "speed": 39,
+          "ability": "Storm Drain",
+          "moves": ["Scald", "Earthquake", "Sludge Bomb", "Rock Tomb"]
+        },
+        {
+          "name": "Lucario",
+          "type": ["Fighting", "Steel"],
+          "level": 63,
+          "attack": 110,
+          "special_attack": 115,
+          "defense": 70,
+          "special_defense": 70,
+          "speed": 90,
+          "ability": "Inner Focus",
+          "moves": ["Aura Sphere", "Dragon Pulse", "Flash Cannon", "Nasty Plot"]
+        },
+        {
+          "name": "Milotic",
+          "type": ["Water"],
+          "level": 63,
+          "attack": 60,
+          "special_attack": 100,
+          "defense": 79,
+          "special_defense": 125,
+          "speed": 81,
+          "ability": "Marvel Scale",
+          "moves": ["Recover", "Mirror Coat", "Ice Beam", "Scald"]
+        },
+        {
+          "name": "Garchomp",
+          "type": ["Dragon", "Ground"],
+          "level": 66,
+          "attack": 130,
+          "special_attack": 80,
+          "defense": 95,
+          "special_defense": 85,
+          "speed": 102,
+          "ability": "Rough Skin",
+          "moves": ["Dragon Claw", "Earthquake", "Swords Dance", "Poison Jab"]
+        }
+      ]
+    }
+  }
+}
+
