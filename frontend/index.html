@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Damage Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚔️ Pokemon Damage Calculator</h1>
+            <p>Calculate damage between Pokemon with comprehensive battle conditions</p>
+        </header>
+
+        <main>
+            <!-- Team Upload Section -->
+            <section class="upload-section">
+                <h2>📁 Team Builder</h2>
+                <div class="upload-container">
+                    <div class="upload-box">
+                        <h3>Your Team</h3>
+                        <input type="file" id="team-upload" accept=".csv,.json" multiple>
+                        <label for="team-upload" class="upload-btn">Choose Team File</label>
+                        <div class="file-info" id="team-file-info">No file selected</div>
+                        <div class="team-preview" id="team-preview"></div>
+                    </div>
+                    <div class="upload-box">
+                        <h3>Opponent Team</h3>
+                        <input type="file" id="opponent-upload" accept=".csv,.json" multiple>
+                        <label for="opponent-upload" class="upload-btn">Choose Opponent File</label>
+                        <div class="file-info" id="opponent-file-info">No file selected</div>
+                        <div class="team-preview" id="opponent-preview"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Manual Input Section -->
+            <section class="manual-input-section">
+                <h2>🎯 Manual Battle Setup</h2>
+                
+                <div class="pokemon-setup">
+                    <!-- Attacker Pokemon -->
+                    <div class="pokemon-card attacker">
+                        <h3>⚔️ Your Pokemon</h3>
+                        <div class="pokemon-selector">
+                            <select id="attacker-select" class="pokemon-dropdown">
+                                <option value="">Select Pokemon...</option>
+                            </select>
+                            <button type="button" class="manual-btn" onclick="showManualInput('attacker')">Manual Input</button>
+                        </div>
+                        
+                        <div class="pokemon-form" id="attacker-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Name:</label>
+                                    <input type="text" id="attacker-name" placeholder="Pokemon name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Level:</label>
+                                    <input type="number" id="attacker-level" min="1" max="100" value="50">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Type 1:</label>
+                                    <select id="attacker-type1">
+                                        <option value="">Select Type</option>
+                                        <option value="normal">Normal</option>
+                                        <option value="fire">Fire</option>
+                                        <option value="water">Water</option>
+                                        <option value="electric">Electric</option>
+                                        <option value="grass">Grass</option>
+                                        <option value="ice">Ice</option>
+                                        <option value="fighting">Fighting</option>
+                                        <option value="poison">Poison</option>
+                                        <option value="ground">Ground</option>
+                                        <option value="flying">Flying</option>
+                                        <option value="psychic">Psychic</option>
+                                        <option value="bug">Bug</option>
+                                        <option value="rock">Rock</option>
+                                        <option value="ghost">Ghost</option>
+                                        <option value="dragon">Dragon</option>
+                                        <option value="dark">Dark</option>
+                                        <option value="steel">Steel</option>
+                                        <option value="fairy">Fairy</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Type 2:</label>
+                                    <select id="attacker-type2">
+                                        <option value="">None</option>
+                                        <option value="normal">Normal</option>
+                                        <option value="fire">Fire</option>
+                                        <option value="water">Water</option>
+                                        <option value="electric">Electric</option>
+                                        <option value="grass">Grass</option>
+                                        <option value="ice">Ice</option>
+                                        <option value="fighting">Fighting</option>
+                                        <option value="poison">Poison</option>
+                                        <option value="ground">Ground</option>
+                                        <option value="flying">Flying</option>
+                                        <option value="psychic">Psychic</option>
+                                        <option value="bug">Bug</option>
+                                        <option value="rock">Rock</option>
+                                        <option value="ghost">Ghost</option>
+                                        <option value="dragon">Dragon</option>
+                                        <option value="dark">Dark</option>
+                                        <option value="steel">Steel</option>
+                                        <option value="fairy">Fairy</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="stats-grid">
+                                <div class="form-group">
+                                    <label>HP:</label>
+                                    <input type="number" id="attacker-hp" min="1" value="100">
+                                </div>
+                                <div class="form-group">
+                                    <label>Attack:</label>
+                                    <input type="number" id="attacker-attack" min="1" value="75">
+                                </div>
+                                <div class="form-group">
+                                    <label>Defense:</label>
+                                    <input type="number" id="attacker-defense" min="1" value="70">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sp. Attack:</label>
+                                    <input type="number" id="attacker-sp-attack" min="1" value="80">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sp. Defense:</label>
+                                    <input type="number" id="attacker-sp-defense" min="1" value="75">
+                                </div>
+                                <div class="form-group">
+                                    <label>Speed:</label>
+                                    <input type="number" id="attacker-speed" min="1" value="70">
+                                </div>
+                            </div>
+
+                            <div class="moves-section">
+                                <h4>Moves</h4>
+                                <div id="attacker-moves">
+                                    <div class="move-input">
+                                        <input type="text" placeholder="Move name" class="move-name">
+                                        <select class="move-type">
+                                            <option value="normal">Normal</option>
+                                            <option value="fire">Fire</option>
+                                            <option value="water">Water</option>
+                                            <option value="electric">Electric</option>
+                                            <option value="grass">Grass</option>
+                                            <option value="ice">Ice</option>
+                                            <option value="fighting">Fighting</option>
+                                            <option value="poison">Poison</option>
+                                            <option value="ground">Ground</option>
+                                            <option value="flying">Flying</option>
+                                            <option value="psychic">Psychic</option>
+                                            <option value="bug">Bug</option>
+                                            <option value="rock">Rock</option>
+                                            <option value="ghost">Ghost</option>
+                                            <option value="dragon">Dragon</option>
+                                            <option value="dark">Dark</option>
+                                            <option value="steel">Steel</option>
+                                            <option value="fairy">Fairy</option>
+                                        </select>
+                                        <input type="number" placeholder="Power" class="move-power" min="0">
+                                        <select class="move-category">
+                                            <option value="physical">Physical</option>
+                                            <option value="special">Special</option>
+                                            <option value="status">Status</option>
+                                        </select>
+                                        <button type="button" onclick="removeMove(this)">×</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-move-btn" onclick="addMove('attacker')">+ Add Move</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Defender Pokemon -->
+                    <div class="pokemon-card defender">
+                        <h3>🛡️ Opponent Pokemon</h3>
+                        <div class="pokemon-selector">
+                            <select id="defender-select" class="pokemon-dropdown">
+                                <option value="">Select Pokemon...</option>
+                            </select>
+                            <button type="button" class="manual-btn" onclick="showManualInput('defender')">Manual Input</button>
+                        </div>
+                        
+                        <div class="pokemon-form" id="defender-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Name:</label>
+                                    <input type="text" id="defender-name" placeholder="Pokemon name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Level:</label>
+                                    <input type="number" id="defender-level" min="1" max="100" value="50">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Type 1:</label>
+                                    <select id="defender-type1">
+                                        <option value="">Select Type</option>
+                                        <option value="normal">Normal</option>
+                                        <option value="fire">Fire</option>
+                                        <option value="water">Water</option>
+                                        <option value="electric">Electric</option>
+                                        <option value="grass">Grass</option>
+                                        <option value="ice">Ice</option>
+                                        <option value="fighting">Fighting</option>
+                                        <option value="poison">Poison</option>
+                                        <option value="ground">Ground</option>
+                                        <option value="flying">Flying</option>
+                                        <option value="psychic">Psychic</option>
+                                        <option value="bug">Bug</option>
+                                        <option value="rock">Rock</option>
+                                        <option value="ghost">Ghost</option>
+                                        <option value="dragon">Dragon</option>
+                                        <option value="dark">Dark</option>
+                                        <option value="steel">Steel</option>
+                                        <option value="fairy">Fairy</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Type 2:</label>
+                                    <select id="defender-type2">
+                                        <option value="">None</option>
+                                        <option value="normal">Normal</option>
+                                        <option value="fire">Fire</option>
+                                        <option value="water">Water</option>
+                                        <option value="electric">Electric</option>
+                                        <option value="grass">Grass</option>
+                                        <option value="ice">Ice</option>
+                                        <option value="fighting">Fighting</option>
+                                        <option value="poison">Poison</option>
+                                        <option value="ground">Ground</option>
+                                        <option value="flying">Flying</option>
+                                        <option value="psychic">Psychic</option>
+                                        <option value="bug">Bug</option>
+                                        <option value="rock">Rock</option>
+                                        <option value="ghost">Ghost</option>
+                                        <option value="dragon">Dragon</option>
+                                        <option value="dark">Dark</option>
+                                        <option value="steel">Steel</option>
+                                        <option value="fairy">Fairy</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="stats-grid">
+                                <div class="form-group">
+                                    <label>HP:</label>
+                                    <input type="number" id="defender-hp" min="1" value="100">
+                                </div>
+                                <div class="form-group">
+                                    <label>Attack:</label>
+                                    <input type="number" id="defender-attack" min="1" value="75">
+                                </div>
+                                <div class="form-group">
+                                    <label>Defense:</label>
+                                    <input type="number" id="defender-defense" min="1" value="70">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sp. Attack:</label>
+                                    <input type="number" id="defender-sp-attack" min="1" value="80">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sp. Defense:</label>
+                                    <input type="number" id="defender-sp-defense" min="1" value="75">
+                                </div>
+                                <div class="form-group">
+                                    <label>Speed:</label>
+                                    <input type="number" id="defender-speed" min="1" value="70">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Battle Conditions -->
+                <section class="battle-conditions">
+                    <h3>⚙️ Battle Conditions</h3>
+                    <div class="conditions-grid">
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="critical-hit"> Critical Hit
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="burned"> Burned (Physical -50%)
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Weather:</label>
+                            <select id="weather">
+                                <option value="">None</option>
+                                <option value="rain">Rain</option>
+                                <option value="sun">Sun</option>
+                                <option value="sandstorm">Sandstorm</option>
+                                <option value="hail">Hail</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Screen:</label>
+                            <select id="screen">
+                                <option value="">None</option>
+                                <option value="reflect">Reflect (Physical -50%)</option>
+                                <option value="light_screen">Light Screen (Special -50%)</option>
+                                <option value="aurora_veil">Aurora Veil (Both -50%)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Field:</label>
+                            <select id="field">
+                                <option value="">None</option>
+                                <option value="electric">Electric Terrain</option>
+                                <option value="grass">Grassy Terrain</option>
+                                <option value="psychic">Psychic Terrain</option>
+                                <option value="misty">Misty Terrain</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button type="button" class="calculate-btn" onclick="calculateDamage()">Calculate Damage</button>
+                    <button type="button" class="best-move-btn" onclick="findBestMove()">Find Best Move</button>
+                    <button type="button" class="clear-btn" onclick="clearAll()">Clear All</button>
+                </div>
+
+                <!-- Results Section -->
+                <section class="results-section" id="results" style="display: none;">
+                    <h3>📊 Battle Results</h3>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <h4>Damage Calculation</h4>
+                            <div class="result-item">
+                                <span class="result-label">Max Damage:</span>
+                                <span class="result-value" id="max-damage">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Min Damage:</span>
+                                <span class="result-value" id="min-damage">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Critical Hit:</span>
+                                <span class="result-value" id="crit-damage">-</span>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <h4>Type Effectiveness</h4>
+                            <div class="result-item">
+                                <span class="result-label">Effectiveness:</span>
+                                <span class="result-value" id="type-effectiveness">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">STAB:</span>
+                                <span class="result-value" id="stab">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="best-move-result" id="best-move-result" style="display: none;">
+                        <h4>Best Move Analysis</h4>
+                        <div id="best-move-details"></div>
+                    </div>
+                </section>
+
+                <!-- Error Section -->
+                <div class="error-section" id="error" style="display: none;">
+                    <div class="error-message">
+                        <span class="error-icon">⚠️</span>
+                        <span id="error-text"></span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

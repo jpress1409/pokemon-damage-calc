@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Damage Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .pokemon-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .pokemon-card {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background: #fafafa;
+        }
+        .pokemon-card h3 {
+            color: #555;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #666;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .move-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .options-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px solid #4CAF50;
+            border-radius: 8px;
+            background: #f9f9f9;
+            display: none;
+        }
+        .result-item {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .error {
+            color: #d32f2f;
+            background-color: #ffebee;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: none;
+        }
+        .type-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 5px;
+            color: white;
+        }
+        .type-normal { background-color: #A8A878; }
+        .type-fire { background-color: #F08030; }
+        .type-water { background-color: #6890F0; }
+        .type-electric { background-color: #F8D030; }
+        .type-grass { background-color: #78C850; }
+        .type-ice { background-color: #98D8D8; }
+        .type-fighting { background-color: #C03028; }
+        .type-poison { background-color: #A040A0; }
+        .type-ground { background-color: #E0C068; }
+        .type-flying { background-color: #A890F0; }
+        .type-psychic { background-color: #F85888; }
+        .type-bug { background-color: #A8B820; }
+        .type-rock { background-color: #B8A038; }
+        .type-ghost { background-color: #705898; }
+        .type-dragon { background-color: #7038F8; }
+        .type-dark { background-color: #705848; }
+        .type-steel { background-color: #B8B8D0; }
+        .type-fairy { background-color: #EE99AC; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚔️ Pokemon Damage Calculator</h1>
+        
+        <div class="pokemon-section">
+            <div class="pokemon-card">
+                <h3>🎯 Attacker</h3>
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" id="attacker-name" value="Mudkip">
+                </div>
+                <div class="form-group">
+                    <label>Types:</label>
+                    <div>
+                        <select id="attacker-type1">
+                            <option value="water">Water</option>
+                            <option value="ground">Ground</option>
+                            <option value="fire">Fire</option>
+                            <option value="grass">Grass</option>
+                            <option value="electric">Electric</option>
+                            <option value="psychic">Psychic</option>
+                            <option value="ice">Ice</option>
+                            <option value="dragon">Dragon</option>
+                            <option value="dark">Dark</option>
+                            <option value="fairy">Fairy</option>
+                            <option value="normal">Normal</option>
+                            <option value="fighting">Fighting</option>
+                            <option value="flying">Flying</option>
+                            <option value="poison">Poison</option>
+                            <option value="ground">Ground</option>
+                            <option value="rock">Rock</option>
+                            <option value="bug">Bug</option>
+                            <option value="ghost">Ghost</option>
+                            <option value="steel">Steel</option>
+                        </select>
+                        <select id="attacker-type2">
+                            <option value="">None</option>
+                            <option value="water">Water</option>
+                            <option value="ground" selected>Ground</option>
+                            <option value="fire">Fire</option>
+                            <option value="grass">Grass</option>
+                            <option value="electric">Electric</option>
+                            <option value="psychic">Psychic</option>
+                            <option value="ice">Ice</option>
+                            <option value="dragon">Dragon</option>
+                            <option value="dark">Dark</option>
+                            <option value="fairy">Fairy</option>
+                            <option value="normal">Normal</option>
+                            <option value="fighting">Fighting</option>
+                            <option value="flying">Flying</option>
+                            <option value="poison">Poison</option>
+                            <option value="rock">Rock</option>
+                            <option value="bug">Bug</option>
+                            <option value="ghost">Ghost</option>
+                            <option value="steel">Steel</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Level:</label>
+                    <input type="number" id="attacker-level" value="23" min="1" max="100">
+                </div>
+                <div class="form-group">
+                    <label>Attack:</label>
+                    <input type="number" id="attacker-attack" value="51" min="1">
+                </div>
+                <div class="form-group">
+                    <label>Special Attack:</label>
+                    <input type="number" id="attacker-sp-attack" value="32" min="1">
+                </div>
+                <div class="form-group">
+                    <label>Defense:</label>
+                    <input type="number" id="attacker-defense" value="39" min="1">
+                </div>
+                <div class="form-group">
+                    <label>Special Defense:</label>
+                    <input type="number" id="attacker-sp-defense" value="45" min="1">
+                </div>
+                <div class="form-group">
+                    <label>Speed:</label>
+                    <input type="number" id="attacker-speed" value="37" min="1">
+                </div>
+            </div>
+            
+            <div class="pokemon-card">
+                <h3>🛡️ Defender</h3>
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" id="defender-name" value="Zubat">
+                </div>
+                <div class="form-group">
+                    <label>Types:</label>
+                    <div>
+                        <select id="defender-type1">
+                            <option value="poison" selected>Poison</option>
+                            <option value="water">Water</option>
+                            <option value="ground">Ground</option>
+                            <option value="fire">Fire</option>
+                            <option value="grass">Grass</option>
+                            <option value="electric">Electric</option>
+                            <option value="psychic">Psychic</option>
+                            <option value="ice">Ice</option>
+                            <option value="dragon">Dragon</option>
+                            <option value="dark">Dark</option>
+                            <option value="fairy">Fairy</option>
+                            <option value="normal">Normal</option>
+                            <option value="fighting">Fighting</option>
+                            <option value="flying" selected>Flying</option>
+                            <option value="rock">Rock</option>
+                            <option value="bug">Bug</option>
+                            <option value="ghost">Ghost</option>
+                            <option value="steel">Steel</option>
+                        </select>
+                        <select id="defender-type2">
+                            <option value="">None</option>
+                            <option value="poison" selected>Poison</option>
+                            <option value="water">Water</option>
+                            <option value="ground">Ground</option>
+                            <option value="fire">Fire</option>
+                            <option value="grass">Grass</option>
+                            <option value="electric">Electric</option>
+                            <option value="psychic">Psychic</option>
+                            <option value="ice">Ice</option>
+                            <option value="dragon">Dragon</option>
+                            <option value="dark">Dark</option>
+                            <option value="fairy">Fairy</option>
+                            <option value="normal">Normal</option>
+                            <option value="fighting">Fighting</option>
+                            <option value="flying" selected>Flying</option>
+                            <option value="rock">Rock</option>
+                            <option value="bug">Bug</option>
+                            <option value="ghost">Ghost</option>
+                            <option value="steel">Steel</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Level:</label>
+                    <input type="number" id="defender-level" value="18" min="1" max="100">
+                </div>
+                <div class="form-group">
+                    <label>Attack:</label>
+                    <input type="number" id="defender-attack" value="21" min="1">
+                </div>
+                <div class="form-group">
+                    <label>Special Attack:</label>
+                    <input type="number" id="defender-sp-attack" value="17" min="1">
+                </div>
+                <div class="form-group">
+                    <label>Defense:</label>
+                    <input type="number" id="defender-defense" value="17" min="1">
+                </div>
+                <div class="form-group">
+                    <label>Special Defense:</label>
+                    <input type="number" id="defender-sp-defense" value="21" min="1">
+                </div>
+                <div class="form-group">
+                    <label>Speed:</label>
+                    <input type="number" id="defender-speed" value="30" min="1">
+                </div>
+            </div>
+        </div>
+        
+        <div class="move-section">
+            <h3>⚡ Move</h3>
+            <div class="form-group">
+                <label>Move Name:</label>
+                <input type="text" id="move-name" value="Water Gun">
+            </div>
+            <div class="form-group">
+                <label>Type:</label>
+                <select id="move-type">
+                    <option value="water" selected>Water</option>
+                    <option value="ground">Ground</option>
+                    <option value="fire">Fire</option>
+                    <option value="grass">Grass</option>
+                    <option value="electric">Electric</option>
+                    <option value="psychic">Psychic</option>
+                    <option value="ice">Ice</option>
+                    <option value="dragon">Dragon</option>
+                    <option value="dark">Dark</option>
+                    <option value="fairy">Fairy</option>
+                    <option value="normal">Normal</option>
+                    <option value="fighting">Fighting</option>
+                    <option value="flying">Flying</option>
+                    <option value="poison">Poison</option>
+                    <option value="rock">Rock</option>
+                    <option value="bug">Bug</option>
+                    <option value="ghost">Ghost</option>
+                    <option value="steel">Steel</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Power:</label>
+                <input type="number" id="move-damage" value="40" min="1">
+            </div>
+            <div class="form-group">
+                <label>Category:</label>
+                <select id="move-category">
+                    <option value="physical">Physical</option>
+                    <option value="special" selected>Special</option>
+                    <option value="status">Status</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="options-section">
+            <h3>⚙️ Battle Conditions</h3>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="critical-hit"> Critical Hit
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="burned"> Burned (Physical -50%)
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Weather:</label>
+                <select id="weather">
+                    <option value="">None</option>
+                    <option value="rain">Rain</option>
+                    <option value="sun">Sun</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Screen:</label>
+                <select id="screen">
+                    <option value="">None</option>
+                    <option value="reflect">Reflect (Physical -50%)</option>
+                    <option value="light_screen">Light Screen (Special -50%)</option>
+                </select>
+            </div>
+        </div>
+        
+        <button onclick="calculateDamage()">Calculate Damage</button>
+        <button onclick="clearResults()">Clear</button>
+        
+        <div class="results" id="results">
+            <h3>📊 Damage Results</h3>
+            <div class="result-item">
+                <strong>Max Damage:</strong> <span id="max-damage"></span>
+            </div>
+            <div class="result-item">
+                <strong>Min Damage:</strong> <span id="min-damage"></span>
+            </div>
+            <div class="result-item">
+                <strong>Critical Hit:</strong> <span id="crit-damage"></span>
+            </div>
+            <div class="result-item">
+                <strong>Type Effectiveness:</strong> <span id="type-effectiveness"></span>
+            </div>
+            <div class="result-item">
+                <strong>STAB:</strong> <span id="stab"></span>
+            </div>
+        </div>
+        
+        <div class="error" id="error"></div>
+    </div>
+
+    <script>
+        function getTypes(select1, select2) {
+            const types = [select1.value];
+            if (select2.value) {
+                types.push(select2.value);
+            }
+            return types;
+        }
+
+        async function calculateDamage() {
+            const errorDiv = document.getElementById('error');
+            const resultsDiv = document.getElementById('results');
+            
+            // Hide previous results and errors
+            errorDiv.style.display = 'none';
+            resultsDiv.style.display = 'none';
+
+            const data = {
+                attacker: {
+                    name: document.getElementById('attacker-name').value,
+                    type: getTypes(document.getElementById('attacker-type1'), document.getElementById('attacker-type2')),
+                    level: parseInt(document.getElementById('attacker-level').value),
+                    attack: parseInt(document.getElementById('attacker-attack').value),
+                    special_attack: parseInt(document.getElementById('attacker-sp-attack').value),
+                    defense: parseInt(document.getElementById('attacker-defense').value),
+                    special_defense: parseInt(document.getElementById('attacker-sp-defense').value),
+                    speed: parseInt(document.getElementById('attacker-speed').value)
+                },
+                defender: {
+                    name: document.getElementById('defender-name').value,
+                    type: getTypes(document.getElementById('defender-type1'), document.getElementById('defender-type2')),
+                    level: parseInt(document.getElementById('defender-level').value),
+                    attack: parseInt(document.getElementById('defender-attack').value),
+                    special_attack: parseInt(document.getElementById('defender-sp-attack').value),
+                    defense: parseInt(document.getElementById('defender-defense').value),
+                    special_defense: parseInt(document.getElementById('defender-sp-defense').value),
+                    speed: parseInt(document.getElementById('defender-speed').value)
+                },
+                move: {
+                    name: document.getElementById('move-name').value,
+                    type: document.getElementById('move-type').value,
+                    damage: parseInt(document.getElementById('move-damage').value),
+                    category: document.getElementById('move-category').value
+                },
+                critical: document.getElementById('critical-hit').checked,
+                burn: document.getElementById('burned').checked,
+                weather: document.getElementById('weather').value || null,
+                screen: document.getElementById('screen').value || null
+            };
+
+            try {
+                const response = await fetch('/api/calculate-damage', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('max-damage').textContent = result.max_damage;
+                    document.getElementById('min-damage').textContent = result.min_damage;
+                    document.getElementById('crit-damage').textContent = result.crit_damage;
+                    
+                    const effectiveness = result.type_effectiveness;
+                    let effectivenessText = '1x';
+                    if (effectiveness === 0) effectivenessText = '0x (No effect)';
+                    else if (effectiveness === 0.25) effectivenessText = '0.25x';
+                    else if (effectiveness === 0.5) effectivenessText = '0.5x (Not very effective)';
+                    else if (effectiveness === 2) effectivenessText = '2x (Super effective)';
+                    else if (effectiveness === 4) effectivenessText = '4x (Super effective)';
+                    
+                    document.getElementById('type-effectiveness').textContent = effectivenessText;
+                    document.getElementById('stab').textContent = result.stab ? 'Yes (1.5x)' : 'No';
+                    
+                    resultsDiv.style.display = 'block';
+                } else {
+                    errorDiv.textContent = result.error || 'An error occurred';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Network error: ' + error.message;
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
