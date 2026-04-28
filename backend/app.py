@@ -1,14 +1,21 @@
 from flask import Flask, request, jsonify, send_from_directory
+import sys
+import os
+
+# Ensure backend directory is on the Python path
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, BASE_DIR)
+FRONTEND_DIR = os.path.join(BASE_DIR, '..', 'frontend')
+
 from classes.pokemon import Pokemon
 from classes.move import Move
 import utils
-import os
 
-app = Flask(__name__, static_folder='../frontend', static_url_path='/')
+app = Flask(__name__, static_folder=FRONTEND_DIR, static_url_path='/')
 
 @app.route('/')
 def index():
-    return send_from_directory('../frontend', 'index.html')
+    return send_from_directory(FRONTEND_DIR, 'index.html')
 
 @app.route('/api/calculate-damage', methods=['POST'])
 def calculate_damage():
