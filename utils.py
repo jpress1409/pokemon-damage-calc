@@ -1,8 +1,13 @@
 def main_calc(move, attacker, defender):
+    if defender.defense == 0 or defender.special_defense == 0:
+        raise ValueError("Defense stats cannot be zero")
+    
     if move.cat == "physical":
         return (2*attacker.level/5+2) * move.damage * (attacker.attack/defender.defense) / 50
     if move.cat == "special":
         return (2*attacker.level/5+2) * move.damage * (attacker.special_attack/defender.special_defense) / 50
+    
+    raise ValueError(f"Invalid move category: {move.cat}")
 
 def super_effective_check(move_type, target_types):
     types = {"normal": {"ghost": 0},
@@ -26,7 +31,7 @@ def super_effective_check(move_type, target_types):
              "dragon": {"dragon": 2, "steel": .5, "fairy": 0},
              "dark": {"fighting": .5, "psychic": 2, "ghost": 2, "fairy": .5},
              "steel": {"fire": .5, "water": .5, "electric": .5, "ice": 2, "rock": 2, "fairy": 2},
-             "fairy": {"fire": .5, "fighting": 2, "poison": .5, "dragon": 2, "dark": 2, "steel": .5, "fairy": 1}}
+             "fairy": {"fire": .5, "fighting": 2, "poison": .5, "dragon": 2, "dark": 2, "steel": .5, "fairy": .5}}
     eff = 1
 
     for i in target_types:
@@ -35,7 +40,7 @@ def super_effective_check(move_type, target_types):
     return eff
 
 def multipliers(attacker, move, base_calc, burn=False, screen=None, target=1, weather=None, ff=False):
-    if burn and attacker.ability !="guts":
+    if burn and attacker.ability != "guts":
         base_calc *= .5
     if move.cat == "physical" and screen == "reflect":
         base_calc *= .5
@@ -46,12 +51,12 @@ def multipliers(attacker, move, base_calc, burn=False, screen=None, target=1, we
     if weather == "rain":
         if move.type == "water":
             base_calc *= 1.5
-        if move.type == "fire":
+        elif move.type == "fire":
             base_calc *= .5
-    if weather == "sun":
+    elif weather == "sun":
         if move.type == "fire":
             base_calc *= 1.5
-        if move.type == "water":
+        elif move.type == "water":
             base_calc *= .5
     return base_calc + 2
 
@@ -81,10 +86,9 @@ def best_move(attacker, defender):
         base=main_calc(move, attacker, defender)
         mults=multipliers(attacker, move, base)
         final = type_check(mults, attacker, move, defender)
-
         moves[move] = final
 
-        max_dam = max(moves.values())
-        move_name = [k for k, v in moves.items() if v == max_dam]
+    max_dam = max(moves.values())
+    move_name = [k for k, v in moves.items() if v == max_dam]
 
     return f"Move: {move_name}\nDamage: {max_dam}"
