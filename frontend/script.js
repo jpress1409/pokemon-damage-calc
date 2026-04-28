@@ -1,7 +1,7 @@
 // Global variables
 let currentTeam = [];
 let currentOpponent = [];
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = '/api';
 
 // Sample Pokemon data for demonstration
 const samplePokemon = [
