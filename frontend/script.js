@@ -1,6 +1,8 @@
 // Global variables
 let currentTeam = [];
 let currentOpponent = [];
+let currentBossTeam = [];
+let selectedBossPokemon = null;
 const API_BASE_URL = '/api';
 
 // Sample Pokemon data for demonstration
@@ -707,22 +709,56 @@ function createBossTeamButton(name, team, category) {
 
 // Import boss team as opponent
 function importBossTeam(team) {
-    currentOpponent = team;
+    currentBossTeam = team;
     
-    // Display team preview
-    const preview = document.getElementById('opponent-preview');
+    // Display team preview in boss section
+    const preview = document.getElementById('boss-team-display');
     displayTeamPreview(team, preview);
+    
+    // Show the preview section
+    document.getElementById('boss-team-preview').style.display = 'block';
+    
+    // Make Pokemon clickable in preview
+    const pokemonItems = preview.querySelectorAll('div');
+    pokemonItems.forEach((item, index) => {
+        item.style.cursor = 'pointer';
+        item.onclick = () => selectBossPokemon(index);
+    });
+}
+
+// Select a Pokemon from the boss team
+function selectBossPokemon(index) {
+    selectedBossPokemon = index;
+    
+    // Highlight selected Pokemon
+    const preview = document.getElementById('boss-team-display');
+    const pokemonItems = preview.querySelectorAll('div');
+    pokemonItems.forEach((item, i) => {
+        if (i === index) {
+            item.style.background = 'rgba(255, 255, 255, 0.3)';
+            item.style.border = '2px solid white';
+        } else {
+            item.style.background = '';
+            item.style.border = '';
+        }
+    });
+}
+
+// Load selected boss Pokemon into form
+function loadSelectedBossPokemon() {
+    if (selectedBossPokemon === null || !currentBossTeam[selectedBossPokemon]) {
+        alert('Please select a Pokemon from the team first');
+        return;
+    }
+    
+    const pokemon = currentBossTeam[selectedBossPokemon];
+    loadBossPokemonData(pokemon, 'defender');
+    
+    // Also populate the opponent dropdown
+    populatePokemonDropdown(currentBossTeam, 'defender-pokemon-list');
     
     // Update file info
     document.getElementById('opponent-file-info').textContent = 'Imported: Boss Team';
-    
-    // Populate Pokemon dropdown
-    populatePokemonDropdown(team, 'defender-pokemon-list');
-    
-    // Load first Pokemon into form
-    if (team.length > 0) {
-        loadBossPokemonData(team[0], 'defender');
-    }
     
     showManualInput('defender');
 }
