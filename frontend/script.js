@@ -242,12 +242,22 @@ function displayTeamPreview(team, previewElement) {
         pokemonDiv.style.cssText = 'margin-bottom: 10px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 5px;';
         
         const name = pokemon.name || pokemon.Name || 'Unknown';
-        const types = pokemon.types || pokemon.Type || 'Unknown';
+        const types = pokemon.type || pokemon.types || pokemon.Type || 'Unknown';
         const level = pokemon.level || pokemon.Level || '50';
+        
+        // Format types for display
+        let typeDisplay = '';
+        if (Array.isArray(types)) {
+            typeDisplay = types.join(' / ');
+        } else if (types) {
+            typeDisplay = types;
+        } else {
+            typeDisplay = 'Unknown';
+        }
         
         pokemonDiv.innerHTML = `
             <strong>${name}</strong> (Lv. ${level})<br>
-            <small>Types: ${Array.isArray(types) ? types.join(', ') : types}</small>
+            <small>Type: ${typeDisplay}</small>
         `;
         
         previewElement.appendChild(pokemonDiv);

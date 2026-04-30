@@ -179,11 +179,13 @@ def apply_item_effects(damage, attacker, move):
         item_key = attacker.held_item
         item = None
         
-        # Check if it's a nested item (type gems or plates)
+        # Check if it's a nested item (type gems or plates or berries)
         if item_key in held_items.get('type_boosting_items', {}).get('items', {}):
             item = held_items['type_boosting_items']['items'][item_key]
         elif item_key in held_items.get('type_plates', {}).get('items', {}):
             item = held_items['type_plates']['items'][item_key]
+        elif item_key in held_items.get('type_resist_berries', {}).get('items', {}):
+            item = held_items['type_resist_berries']['items'][item_key]
         elif item_key in held_items:
             item = held_items[item_key]
         
@@ -212,6 +214,13 @@ def apply_item_effects(damage, attacker, move):
         if 'type_multiplier' in effect and 'type' in effect:
             if effect['type'] == move.type:
                 damage *= effect['type_multiplier']
+        
+        # Apply type resist multiplier (for berries)
+        if 'type_resist' in effect and 'resist_multiplier' in effect:
+            # This would need to check if the move is super-effective against the defender
+            # For now, apply if move type matches the resist type
+            if effect['type_resist'] == move.type:
+                damage *= effect['resist_multiplier']
         
         # Apply super-effective multiplier
         if 'super_effective_multiplier' in effect:

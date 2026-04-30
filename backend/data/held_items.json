@@ -492,5 +492,147 @@
     "effect": {
       "description": "No held item"
     }
+  },
+  "type_resist_berries": {
+    "name": "Type-Resist Berries",
+    "category": "held_item",
+    "items": {
+      "occaberry": {
+        "name": "Occa Berry",
+        "effect": {
+          "type_resist": "fire",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Fire damage by 50% once"
+        }
+      },
+      "passhoberry": {
+        "name": "Passho Berry",
+        "effect": {
+          "type_resist": "water",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Water damage by 50% once"
+        }
+      },
+      "wacanberry": {
+        "name": "Wacan Berry",
+        "effect": {
+          "type_resist": "electric",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Electric damage by 50% once"
+        }
+      },
+      "rindoberry": {
+        "name": "Rindo Berry",
+        "effect": {
+          "type_resist": "grass",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Grass damage by 50% once"
+        }
+      },
+      "yacheberry": {
+        "name": "Yache Berry",
+        "effect": {
+          "type_resist": "ice",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Ice damage by 50% once"
+        }
+      },
+      "chopleberry": {
+        "name": "Chople Berry",
+        "effect": {
+          "type_resist": "fighting",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Fighting damage by 50% once"
+        }
+      },
+      "kebiaberry": {
+        "name": "Kebia Berry",
+        "effect": {
+          "type_resist": "poison",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Poison damage by 50% once"
+        }
+      },
+      "shucaberry": {
+        "name": "Shuca Berry",
+        "effect": {
+          "type_resist": "ground",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Ground damage by 50% once"
+        }
+      },
+      "cobaeberry": {
+        "name": "Cobae Berry",
+        "effect": {
+          "type_resist": "flying",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Flying damage by 50% once"
+        }
+      },
+      "payapaberry": {
+        "name": "Payapa Berry",
+        "effect": {
+          "type_resist": "psychic",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Psychic damage by 50% once"
+        }
+      },
+      "tangaberry": {
+        "name": "Tanga Berry",
+        "effect": {
+          "type_resist": "bug",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Bug damage by 50% once"
+        }
+      },
+      "chartiberry": {
+        "name": "Charti Berry",
+        "effect": {
+          "type_resist": "rock",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Rock damage by 50% once"
+        }
+      },
+      "kasibberry": {
+        "name": "Kasib Berry",
+        "effect": {
+          "type_resist": "ghost",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Ghost damage by 50% once"
+        }
+      },
+      "habanberry": {
+        "name": "Haban Berry",
+        "effect": {
+          "type_resist": "dragon",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Dragon damage by 50% once"
+        }
+      },
+      "colburberry": {
+        "name": "Colbur Berry",
+        "effect": {
+          "type_resist": "dark",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Dark damage by 50% once"
+        }
+      },
+      "babiriberry": {
+        "name": "Babiri Berry",
+        "effect": {
+          "type_resist": "steel",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Steel damage by 50% once"
+        }
+      },
+      "roseliberry": {
+        "name": "Roseli Berry",
+        "effect": {
+          "type_resist": "fairy",
+          "resist_multiplier": 0.5,
+          "description": "Reduces super-effective Fairy damage by 50% once"
+        }
+      }
+    }
   }
 }
