@@ -299,6 +299,95 @@ function populatePokemonDropdown(team, listId) {
 function setupFormHandlers() {
     // Add initial move for attacker
     addMove('attacker');
+    
+    // Add event listeners to update user stats display
+    const attackerInputs = document.querySelectorAll('#attacker-form input, #attacker-form select');
+    attackerInputs.forEach(input => {
+        input.addEventListener('change', updateUserStatsDisplay);
+        input.addEventListener('input', updateUserStatsDisplay);
+    });
+}
+
+// Update user stats display
+function updateUserStatsDisplay() {
+    const statsSection = document.getElementById('user-pokemon-stats');
+    const statsDisplay = document.getElementById('user-stats-display');
+    
+    const name = document.getElementById('attacker-name').value;
+    const level = document.getElementById('attacker-level').value;
+    const type1 = document.getElementById('attacker-type1').value;
+    const type2 = document.getElementById('attacker-type2').value;
+    
+    if (!name) {
+        statsSection.style.display = 'none';
+        return;
+    }
+    
+    statsSection.style.display = 'block';
+    
+    const hp = document.getElementById('attacker-hp').value || 0;
+    const attack = document.getElementById('attacker-attack').value || 0;
+    const defense = document.getElementById('attacker-defense').value || 0;
+    const spAttack = document.getElementById('attacker-sp-attack').value || 0;
+    const spDefense = document.getElementById('attacker-sp-defense').value || 0;
+    const speed = document.getElementById('attacker-speed').value || 0;
+    
+    const attackBoost = document.getElementById('attacker-attack-boost').value || 0;
+    const defenseBoost = document.getElementById('attacker-defense-boost').value || 0;
+    const spAttackBoost = document.getElementById('attacker-sp-attack-boost').value || 0;
+    const spDefenseBoost = document.getElementById('attacker-sp-defense-boost').value || 0;
+    const speedBoost = document.getElementById('attacker-speed-boost').value || 0;
+    
+    // Calculate boosted stats
+    const calculateBoostedStat = (base, boost) => {
+        if (boost == 0) return base;
+        const multiplier = 1 + (0.5 * boost);
+        return Math.round(base * multiplier);
+    };
+    
+    const boostedAttack = calculateBoostedStat(attack, attackBoost);
+    const boostedDefense = calculateBoostedStat(defense, defenseBoost);
+    const boostedSpAttack = calculateBoostedStat(spAttack, spAttackBoost);
+    const boostedSpDefense = calculateBoostedStat(spDefense, spDefenseBoost);
+    const boostedSpeed = calculateBoostedStat(speed, speedBoost);
+    
+    statsDisplay.innerHTML = `
+        <div class="stat-box">
+            <h5>${name}</h5>
+            <div class="stat-value">Lv. ${level}</div>
+            <div class="stat-label">${type1}${type2 ? ' / ' + type2 : ''}</div>
+        </div>
+        <div class="stat-box">
+            <h5>HP</h5>
+            <div class="stat-value">${hp}</div>
+            <div class="stat-label">Hit Points</div>
+        </div>
+        <div class="stat-box">
+            <h5>Attack</h5>
+            <div class="stat-value">${boostedAttack}</div>
+            <div class="stat-label">Base: ${attack} ${attackBoost > 0 ? `(+${attackBoost})` : ''}</div>
+        </div>
+        <div class="stat-box">
+            <h5>Defense</h5>
+            <div class="stat-value">${boostedDefense}</div>
+            <div class="stat-label">Base: ${defense} ${defenseBoost > 0 ? `(+${defenseBoost})` : ''}</div>
+        </div>
+        <div class="stat-box">
+            <h5>Sp. Attack</h5>
+            <div class="stat-value">${boostedSpAttack}</div>
+            <div class="stat-label">Base: ${spAttack} ${spAttackBoost > 0 ? `(+${spAttackBoost})` : ''}</div>
+        </div>
+        <div class="stat-box">
+            <h5>Sp. Defense</h5>
+            <div class="stat-value">${boostedSpDefense}</div>
+            <div class="stat-label">Base: ${spDefense} ${spDefenseBoost > 0 ? `(+${spDefenseBoost})` : ''}</div>
+        </div>
+        <div class="stat-box">
+            <h5>Speed</h5>
+            <div class="stat-value">${boostedSpeed}</div>
+            <div class="stat-label">Base: ${speed} ${speedBoost > 0 ? `(+${speedBoost})` : ''}</div>
+        </div>
+    `;
 }
 
 // Show manual input form
