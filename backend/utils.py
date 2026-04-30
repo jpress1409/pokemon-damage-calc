@@ -1,11 +1,76 @@
-def main_calc(move, attacker, defender):
+def get_stat_boost_multiplier(boost_stage):
+    """Calculate stat boost multiplier based on stage (0-6)"""
+    if boost_stage == 0:
+        return 1.0
+    elif boost_stage > 0:
+        # Positive boosts: +1 = 1.5x, +2 = 2x, +3 = 2.5x, etc.
+        return 1.0 + (boost_stage * 0.5)
+    else:
+        # Negative boosts: -1 = 0.67x, -2 = 0.5x, etc.
+        return 1.0 / (1.0 + (abs(boost_stage) * 0.5))
+
+def apply_stat_boosts(pokemon, stat_boosts=None):
+    """Apply stat boosts to a Pokemon's stats"""
+    if stat_boosts is None:
+        return pokemon
+    
+    boosted_pokemon = pokemon
+    
+    # Apply attack boost
+    if hasattr(stat_boosts, 'attack') and stat_boosts.attack != 0:
+        boosted_pokemon.attack = int(pokemon.attack * get_stat_boost_multiplier(stat_boosts.attack))
+    
+    # Apply defense boost
+    if hasattr(stat_boosts, 'defense') and stat_boosts.defense != 0:
+        boosted_pokemon.defense = int(pokemon.defense * get_stat_boost_multiplier(stat_boosts.defense))
+    
+    # Apply special attack boost
+    if hasattr(stat_boosts, 'special_attack') and stat_boosts.special_attack != 0:
+        boosted_pokemon.special_attack = int(pokemon.special_attack * get_stat_boost_multiplier(stat_boosts.special_attack))
+    
+    # Apply special defense boost
+    if hasattr(stat_boosts, 'special_defense') and stat_boosts.special_defense != 0:
+        boosted_pokemon.special_defense = int(pokemon.special_defense * get_stat_boost_multiplier(stat_boosts.special_defense))
+    
+    # Apply speed boost
+    if hasattr(stat_boosts, 'speed') and stat_boosts.speed != 0:
+        boosted_pokemon.speed = int(pokemon.speed * get_stat_boost_multiplier(stat_boosts.speed))
+    
+    return boosted_pokemon
+
+def main_calc(move, attacker, defender, generation=8):
     if defender.defense == 0 or defender.special_defense == 0:
         raise ValueError("Defense stats cannot be zero")
     
-    if move.cat == "physical":
-        return (2*attacker.level/5+2) * move.damage * (attacker.attack/defender.defense) / 50
-    if move.cat == "special":
-        return (2*attacker.level/5+2) * move.damage * (attacker.special_attack/defender.special_defense) / 50
+    # Apply stat boosts
+    attacker = apply_stat_boosts(attacker, getattr(attacker, 'stat_boosts', None))
+    defender = apply_stat_boosts(defender, getattr(defender, 'stat_boosts', None))
+    
+    # Generation-based damage formula adjustments
+    if generation == 1:
+        # Gen 1 formula: different formula
+        if move.cat == "physical":
+            return (((2*attacker.level/5+2) * move.damage * (attacker.attack/defender.defense)) / 50) + 2
+        if move.cat == "special":
+            return (((2*attacker.level/5+2) * move.damage * (attacker.special_attack/defender.special_defense)) / 50) + 2
+    elif generation == 2:
+        # Gen 2-3 formula
+        if move.cat == "physical":
+            return ((2*attacker.level/5+2) * move.damage * (attacker.attack/defender.defense)) / 50 + 2
+        if move.cat == "special":
+            return ((2*attacker.level/5+2) * move.damage * (attacker.special_attack/defender.special_defense)) / 50 + 2
+    elif generation >= 3 and generation <= 5:
+        # Gen 3-5 formula
+        if move.cat == "physical":
+            return (((2*attacker.level/5+2) * move.damage * (attacker.attack/defender.defense)) / 50) + 2
+        if move.cat == "special":
+            return (((2*attacker.level/5+2) * move.damage * (attacker.special_attack/defender.special_defense)) / 50) + 2
+    else:
+        # Gen 6+ formula (current formula)
+        if move.cat == "physical":
+            return (2*attacker.level/5+2) * move.damage * (attacker.attack/defender.defense) / 50
+        if move.cat == "special":
+            return (2*attacker.level/5+2) * move.damage * (attacker.special_attack/defender.special_defense) / 50
     
     raise ValueError(f"Invalid move category: {move.cat}")
 
@@ -80,10 +145,10 @@ def type_check(base_damage, attacker, move, target):
 def low_roll(damage):
     return damage * (85/100)
 
-def best_move(attacker, defender):
+def best_move(attacker, defender, generation=8):
     moves = {}
     for move in attacker.moves:
-        base=main_calc(move, attacker, defender)
+        base=main_calc(move, attacker, defender, generation)
         mults=multipliers(attacker, move, base)
         final = type_check(mults, attacker, move, defender)
         moves[move] = final

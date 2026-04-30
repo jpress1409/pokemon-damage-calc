@@ -45,6 +45,10 @@ def calculate_damage():
             ability=attacker_data.get('ability')
         )
         
+        # Add stat boosts to attacker if provided
+        if 'stat_boosts' in attacker_data:
+            attacker.stat_boosts = type('StatBoosts', (), attacker_data['stat_boosts'])()
+        
         # Create defender Pokemon
         defender = Pokemon(
             name=defender_data['name'],
@@ -58,6 +62,10 @@ def calculate_damage():
             ability=defender_data.get('ability')
         )
         
+        # Add stat boosts to defender if provided
+        if 'stat_boosts' in defender_data:
+            defender.stat_boosts = type('StatBoosts', (), defender_data['stat_boosts'])()
+        
         # Create move
         move = Move(
             name=move_data['name'],
@@ -69,7 +77,8 @@ def calculate_damage():
         )
         
         # Calculate damage
-        base = utils.main_calc(move, attacker, defender)
+        generation = data.get('generation', 8)
+        base = utils.main_calc(move, attacker, defender, generation)
         mults = utils.multipliers(attacker, move, base, 
                                  burn=data.get('burn', False),
                                  screen=data.get('screen'),
@@ -131,6 +140,10 @@ def best_move():
             moves=[]
         )
         
+        # Add stat boosts to attacker if provided
+        if 'stat_boosts' in attacker_data:
+            attacker.stat_boosts = type('StatBoosts', (), attacker_data['stat_boosts'])()
+        
         # Add moves to attacker
         for move_data in moves_data:
             move = Move(
@@ -156,8 +169,13 @@ def best_move():
             ability=defender_data.get('ability')
         )
         
+        # Add stat boosts to defender if provided
+        if 'stat_boosts' in defender_data:
+            defender.stat_boosts = type('StatBoosts', (), defender_data['stat_boosts'])()
+        
         # Calculate best move
-        result = utils.best_move(attacker, defender)
+        generation = data.get('generation', 8)
+        result = utils.best_move(attacker, defender, generation)
         
         return jsonify({
             'best_move': result

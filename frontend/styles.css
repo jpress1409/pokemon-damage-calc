@@ -166,6 +166,33 @@ input[type="file"] {
     font-size: 16px;
 }
 
+.pokemon-search {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.pokemon-search:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.stat-boost {
+    margin-top: 5px;
+    padding: 6px;
+    font-size: 12px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    color: #495057;
+}
+
+.stat-boost:hover {
+    border-color: #3498db;
+}
+
 .manual-btn {
     padding: 10px 20px;
     background: #95a5a6;

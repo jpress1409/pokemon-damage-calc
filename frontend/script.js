@@ -42,25 +42,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize Pokemon dropdowns
 function initializePokemonDropdowns() {
-    const attackerSelect = document.getElementById('attacker-select');
-    const defenderSelect = document.getElementById('defender-select');
+    const attackerList = document.getElementById('attacker-pokemon-list');
+    const defenderList = document.getElementById('defender-pokemon-list');
     
-    // Add sample Pokemon to dropdowns
+    // Add sample Pokemon to datalists
     samplePokemon.forEach(pokemon => {
         const option1 = new Option(pokemon.name, pokemon.name);
         const option2 = new Option(pokemon.name, pokemon.name);
-        attackerSelect.add(option1);
-        defenderSelect.add(option2);
+        attackerList.add(option1);
+        defenderList.add(option2);
     });
     
-    // Add change handlers
-    attackerSelect.addEventListener('change', function() {
+    // Add change handlers for search inputs
+    const attackerSearch = document.getElementById('attacker-search');
+    const defenderSearch = document.getElementById('defender-search');
+    
+    attackerSearch.addEventListener('change', function() {
         if (this.value) {
             loadPokemonData(this.value, 'attacker');
         }
     });
     
-    defenderSelect.addEventListener('change', function() {
+    defenderSearch.addEventListener('change', function() {
         if (this.value) {
             loadPokemonData(this.value, 'defender');
         }
@@ -180,11 +183,11 @@ function handleFileUpload(event, teamType) {
             if (teamType === 'team') {
                 currentTeam = data;
                 displayTeamPreview(data, preview);
-                populatePokemonDropdown(data, 'attacker-select');
+                populatePokemonDropdown(data, 'attacker-pokemon-list');
             } else {
                 currentOpponent = data;
                 displayTeamPreview(data, preview);
-                populatePokemonDropdown(data, 'defender-select');
+                populatePokemonDropdown(data, 'defender-pokemon-list');
             }
         } catch (error) {
             fileInfo.textContent = `Error reading file: ${error.message}`;
@@ -244,20 +247,20 @@ function displayTeamPreview(team, previewElement) {
 }
 
 // Populate Pokemon dropdown with team data
-function populatePokemonDropdown(team, dropdownId) {
-    const dropdown = document.getElementById(dropdownId);
+function populatePokemonDropdown(team, listId) {
+    const datalist = document.getElementById(listId);
     
     // Clear existing options except the first one
-    while (dropdown.children.length > 1) {
-        dropdown.removeChild(dropdown.lastChild);
+    while (datalist.children.length > 1) {
+        datalist.removeChild(datalist.lastChild);
     }
     
-    // Add team Pokemon to dropdown
+    // Add team Pokemon to datalist
     team.forEach(pokemon => {
         const name = pokemon.name || pokemon.Name;
         if (name) {
             const option = new Option(name, name);
-            dropdown.add(option);
+            datalist.add(option);
         }
     });
 }
@@ -315,6 +318,15 @@ function getPokemonData(role) {
         });
     }
     
+    // Get stat boosts
+    const statBoosts = {
+        attack: parseInt(document.getElementById(`${role}-attack-boost`).value) || 0,
+        defense: parseInt(document.getElementById(`${role}-defense-boost`).value) || 0,
+        special_attack: parseInt(document.getElementById(`${role}-sp-attack-boost`).value) || 0,
+        special_defense: parseInt(document.getElementById(`${role}-sp-defense-boost`).value) || 0,
+        speed: parseInt(document.getElementById(`${role}-speed-boost`).value) || 0
+    };
+    
     return {
         name: document.getElementById(`${role}-name`).value || 'Unknown',
         type: types,
@@ -325,13 +337,15 @@ function getPokemonData(role) {
         special_attack: parseInt(document.getElementById(`${role}-sp-attack`).value) || 75,
         special_defense: parseInt(document.getElementById(`${role}-sp-defense`).value) || 75,
         speed: parseInt(document.getElementById(`${role}-speed`).value) || 75,
-        moves: moves
+        moves: moves,
+        stat_boosts: statBoosts
     };
 }
 
 // Get battle conditions
 function getBattleConditions() {
     return {
+        generation: parseInt(document.getElementById('generation').value) || 8,
         critical: document.getElementById('critical-hit').checked,
         burn: document.getElementById('burned').checked,
         weather: document.getElementById('weather').value || null,
@@ -367,7 +381,8 @@ async function calculateDamage() {
                 special_attack: attacker.special_attack,
                 defense: attacker.defense,
                 special_defense: attacker.special_defense,
-                speed: attacker.speed
+                speed: attacker.speed,
+                stat_boosts: attacker.stat_boosts
             },
             defender: {
                 name: defender.name,
@@ -377,7 +392,8 @@ async function calculateDamage() {
                 special_attack: defender.special_attack,
                 defense: defender.defense,
                 special_defense: defender.special_defense,
-                speed: defender.speed
+                speed: defender.speed,
+                stat_boosts: defender.stat_boosts
             },
             move: move,
             ...conditions
@@ -434,7 +450,8 @@ async function findBestMove() {
                 defense: attacker.defense,
                 special_defense: attacker.special_defense,
                 speed: attacker.speed,
-                moves: attacker.moves
+                moves: attacker.moves,
+                stat_boosts: attacker.stat_boosts
             },
             defender: {
                 name: defender.name,
@@ -444,8 +461,10 @@ async function findBestMove() {
                 special_attack: defender.special_attack,
                 defense: defender.defense,
                 special_defense: defender.special_defense,
-                speed: defender.speed
-            }
+                speed: defender.speed,
+                stat_boosts: defender.stat_boosts
+            },
+            generation: conditions.generation
         };
         
         showLoading();
@@ -550,15 +569,16 @@ function hideLoading() {
 // Clear all forms
 function clearAll() {
     // Clear attacker form
-    document.getElementById('attacker-select').value = '';
+    document.getElementById('attacker-search').value = '';
     document.getElementById('attacker-form').classList.remove('active');
     document.getElementById('attacker-moves').innerHTML = '';
     
     // Clear defender form
-    document.getElementById('defender-select').value = '';
+    document.getElementById('defender-search').value = '';
     document.getElementById('defender-form').classList.remove('active');
     
     // Clear battle conditions
+    document.getElementById('generation').value = '8';
     document.getElementById('critical-hit').checked = false;
     document.getElementById('burned').checked = false;
     document.getElementById('weather').value = '';
