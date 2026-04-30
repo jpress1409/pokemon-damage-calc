@@ -1,0 +1,496 @@
+{
+  "choice_band": {
+    "name": "Choice Band",
+    "category": "held_item",
+    "effect": {
+      "attack_multiplier": 1.5,
+      "description": "Boosts Attack by 50%, but limits to one move"
+    }
+  },
+  "choice_specs": {
+    "name": "Choice Specs",
+    "category": "held_item",
+    "effect": {
+      "special_attack_multiplier": 1.5,
+      "description": "Boosts Special Attack by 50%, but limits to one move"
+    }
+  },
+  "choice_scarf": {
+    "name": "Choice Scarf",
+    "category": "held_item",
+    "effect": {
+      "speed_multiplier": 1.5,
+      "description": "Boosts Speed by 50%, but limits to one move"
+    }
+  },
+  "life_orb": {
+    "name": "Life Orb",
+    "category": "held_item",
+    "effect": {
+      "attack_multiplier": 1.3,
+      "special_attack_multiplier": 1.3,
+      "recoil": 0.1,
+      "description": "Boosts both Attack and Special Attack by 30%, but causes 10% recoil damage"
+    }
+  },
+  "expert_belt": {
+    "name": "Expert Belt",
+    "category": "held_item",
+    "effect": {
+      "super_effective_multiplier": 1.2,
+      "description": "Boosts super-effective moves by 20%"
+    }
+  },
+  "muscle_band": {
+    "name": "Muscle Band",
+    "category": "held_item",
+    "effect": {
+      "physical_multiplier": 1.1,
+      "description": "Boosts physical moves by 10%"
+    }
+  },
+  "wise_glasses": {
+    "name": "Wise Glasses",
+    "category": "held_item",
+    "effect": {
+      "special_multiplier": 1.1,
+      "description": "Boosts special moves by 10%"
+    }
+  },
+  "leftovers": {
+    "name": "Leftovers",
+    "category": "held_item",
+    "effect": {
+      "recovery": 0.0625,
+      "description": "Restores 1/16 of max HP each turn"
+    }
+  },
+  "black_sludge": {
+    "name": "Black Sludge",
+    "category": "held_item",
+    "effect": {
+      "recovery": 0.0625,
+      "description": "Restores 1/16 of max HP each turn (poison types only)"
+    }
+  },
+  "assault_vest": {
+    "name": "Assault Vest",
+    "category": "held_item",
+    "effect": {
+      "special_defense_multiplier": 1.5,
+      "description": "Boosts Special Defense by 50%, prevents status moves"
+    }
+  },
+  "eviolite": {
+    "name": "Eviolite",
+    "category": "held_item",
+    "effect": {
+      "defense_multiplier": 1.5,
+      "special_defense_multiplier": 1.5,
+      "description": "Boosts both Defense and Special Defense by 50% (unevolved Pokemon only)"
+    }
+  },
+  "focus_sash": {
+    "name": "Focus Sash",
+    "category": "held_item",
+    "effect": {
+      "survive_one_hit": true,
+      "description": "Guarantees survival of one hit at full HP"
+    }
+  },
+  "air_balloon": {
+    "name": "Air Balloon",
+    "category": "held_item",
+    "effect": {
+      "ground_immunity": true,
+      "description": "Grants immunity to Ground-type moves until hit"
+    }
+  },
+  "heavy_duty_boots": {
+    "name": "Heavy Duty Boots",
+    "category": "held_item",
+    "effect": {
+      "hazard_immunity": true,
+      "description": "Prevents damage from entry hazards"
+    }
+  },
+  "safety_goggles": {
+    "name": "Safety Goggles",
+    "category": "held_item",
+    "effect": {
+      "weather_hazard_immunity": true,
+      "description": "Prevents damage from weather and powder/spore moves"
+    }
+  },
+  "flame_orb": {
+    "name": "Flame Orb",
+    "category": "held_item",
+    "effect": {
+      "status infliction": "burn",
+      "description": "Inflicts burn on holder (useful with Guts/Quick Feet)"
+    }
+  },
+  "toxic_orb": {
+    "name": "Toxic Orb",
+    "category": "held_item",
+    "effect": {
+      "status infliction": "toxic",
+      "description": "Inflicts toxic on holder (useful with Guts/Quick Feet/Magic Guard)"
+    }
+  },
+  "white_herb": {
+    "name": "White Herb",
+    "category": "held_item",
+    "effect": {
+      "stat_restore": true,
+      "description": "Restores lowered stats once per battle"
+    }
+  },
+  "weakness_policy": {
+    "name": "Weakness Policy",
+    "category": "held_item",
+    "effect": {
+      "attack_multiplier_on_hit": 2.0,
+      "special_attack_multiplier_on_hit": 2.0,
+      "description": "Boosts Attack and Special Attack by 2 stages when hit by super-effective move"
+    }
+  },
+  "destiny_knot": {
+    "name": "Destiny Knot",
+    "category": "held_item",
+    "effect": {
+      "description": "Used for breeding (no battle effect)"
+    }
+  },
+  "everstone": {
+    "name": "Everstone",
+    "category": "held_item",
+    "effect": {
+      "description": "Prevents evolution (no battle effect)"
+    }
+  },
+  "rare_bone": {
+    "name": "Rare Bone",
+    "category": "held_item",
+    "effect": {
+      "description": "Can be sold for money (no battle effect)"
+    }
+  },
+  "type_boosting_items": {
+    "name": "Type-Boosting Items",
+    "category": "held_item",
+    "items": {
+      "fire_gem": {
+        "name": "Fire Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "fire",
+          "consumable": true,
+          "description": "Boosts Fire-type moves by 50% once"
+        }
+      },
+      "water_gem": {
+        "name": "Water Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "water",
+          "consumable": true,
+          "description": "Boosts Water-type moves by 50% once"
+        }
+      },
+      "electric_gem": {
+        "name": "Electric Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "electric",
+          "consumable": true,
+          "description": "Boosts Electric-type moves by 50% once"
+        }
+      },
+      "grass_gem": {
+        "name": "Grass Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "grass",
+          "consumable": true,
+          "description": "Boosts Grass-type moves by 50% once"
+        }
+      },
+      "ice_gem": {
+        "name": "Ice Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "ice",
+          "consumable": true,
+          "description": "Boosts Ice-type moves by 50% once"
+        }
+      },
+      "fighting_gem": {
+        "name": "Fighting Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "fighting",
+          "consumable": true,
+          "description": "Boosts Fighting-type moves by 50% once"
+        }
+      },
+      "poison_gem": {
+        "name": "Poison Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "poison",
+          "consumable": true,
+          "description": "Boosts Poison-type moves by 50% once"
+        }
+      },
+      "ground_gem": {
+        "name": "Ground Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "ground",
+          "consumable": true,
+          "description": "Boosts Ground-type moves by 50% once"
+        }
+      },
+      "flying_gem": {
+        "name": "Flying Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "flying",
+          "consumable": true,
+          "description": "Boosts Flying-type moves by 50% once"
+        }
+      },
+      "psychic_gem": {
+        "name": "Psychic Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "psychic",
+          "consumable": true,
+          "description": "Boosts Psychic-type moves by 50% once"
+        }
+      },
+      "bug_gem": {
+        "name": "Bug Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "bug",
+          "consumable": true,
+          "description": "Boosts Bug-type moves by 50% once"
+        }
+      },
+      "rock_gem": {
+        "name": "Rock Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "rock",
+          "consumable": true,
+          "description": "Boosts Rock-type moves by 50% once"
+        }
+      },
+      "ghost_gem": {
+        "name": "Ghost Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "ghost",
+          "consumable": true,
+          "description": "Boosts Ghost-type moves by 50% once"
+        }
+      },
+      "dragon_gem": {
+        "name": "Dragon Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "dragon",
+          "consumable": true,
+          "description": "Boosts Dragon-type moves by 50% once"
+        }
+      },
+      "dark_gem": {
+        "name": "Dark Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "dark",
+          "consumable": true,
+          "description": "Boosts Dark-type moves by 50% once"
+        }
+      },
+      "steel_gem": {
+        "name": "Steel Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "steel",
+          "consumable": true,
+          "description": "Boosts Steel-type moves by 50% once"
+        }
+      },
+      "fairy_gem": {
+        "name": "Fairy Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "fairy",
+          "consumable": true,
+          "description": "Boosts Fairy-type moves by 50% once"
+        }
+      },
+      "normal_gem": {
+        "name": "Normal Gem",
+        "effect": {
+          "type_multiplier": 1.5,
+          "type": "normal",
+          "consumable": true,
+          "description": "Boosts Normal-type moves by 50% once"
+        }
+      }
+    }
+  },
+  "type_plates": {
+    "name": "Type Plates",
+    "category": "held_item",
+    "items": {
+      "flame_plate": {
+        "name": "Flame Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "fire",
+          "description": "Boosts Fire-type moves by 20%"
+        }
+      },
+      "splash_plate": {
+        "name": "Splash Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "water",
+          "description": "Boosts Water-type moves by 20%"
+        }
+      },
+      "zap_plate": {
+        "name": "Zap Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "electric",
+          "description": "Boosts Electric-type moves by 20%"
+        }
+      },
+      "meadow_plate": {
+        "name": "Meadow Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "grass",
+          "description": "Boosts Grass-type moves by 20%"
+        }
+      },
+      "icicle_plate": {
+        "name": "Icicle Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "ice",
+          "description": "Boosts Ice-type moves by 20%"
+        }
+      },
+      "fist_plate": {
+        "name": "Fist Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "fighting",
+          "description": "Boosts Fighting-type moves by 20%"
+        }
+      },
+      "toxic_plate": {
+        "name": "Toxic Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "poison",
+          "description": "Boosts Poison-type moves by 20%"
+        }
+      },
+      "earth_plate": {
+        "name": "Earth Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "ground",
+          "description": "Boosts Ground-type moves by 20%"
+        }
+      },
+      "sky_plate": {
+        "name": "Sky Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "flying",
+          "description": "Boosts Flying-type moves by 20%"
+        }
+      },
+      "mind_plate": {
+        "name": "Mind Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "psychic",
+          "description": "Boosts Psychic-type moves by 20%"
+        }
+      },
+      "insect_plate": {
+        "name": "Insect Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "bug",
+          "description": "Boosts Bug-type moves by 20%"
+        }
+      },
+      "stone_plate": {
+        "name": "Stone Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "rock",
+          "description": "Boosts Rock-type moves by 20%"
+        }
+      },
+      "spooky_plate": {
+        "name": "Spooky Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "ghost",
+          "description": "Boosts Ghost-type moves by 20%"
+        }
+      },
+      "draco_plate": {
+        "name": "Draco Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "dragon",
+          "description": "Boosts Dragon-type moves by 20%"
+        }
+      },
+      "dread_plate": {
+        "name": "Dread Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "dark",
+          "description": "Boosts Dark-type moves by 20%"
+        }
+      },
+      "iron_plate": {
+        "name": "Iron Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "steel",
+          "description": "Boosts Steel-type moves by 20%"
+        }
+      },
+      "pixie_plate": {
+        "name": "Pixie Plate",
+        "effect": {
+          "type_multiplier": 1.2,
+          "type": "fairy",
+          "description": "Boosts Fairy-type moves by 20%"
+        }
+      }
+    }
+  },
+  "none": {
+    "name": "None",
+    "category": "held_item",
+    "effect": {
+      "description": "No held item"
+    }
+  }
+}

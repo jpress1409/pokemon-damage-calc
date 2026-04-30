@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupFileUploadHandlers();
     setupFormHandlers();
     setupBossTeamImport();
+    loadHeldItems();
 });
 
 // Initialize Pokemon dropdowns
@@ -341,7 +342,8 @@ function getPokemonData(role) {
         special_defense: parseInt(document.getElementById(`${role}-sp-defense`).value) || 75,
         speed: parseInt(document.getElementById(`${role}-speed`).value) || 75,
         moves: moves,
-        stat_boosts: statBoosts
+        stat_boosts: statBoosts,
+        held_item: document.getElementById(`${role}-item`).value || null
     };
 }
 
@@ -609,11 +611,17 @@ function clearAll() {
 function setupBossTeamImport() {
     const gameSelect = document.getElementById('boss-game-select');
     
+    if (!gameSelect) {
+        console.error('Boss game select element not found');
+        return;
+    }
+    
     // Load available games
     loadAvailableGames();
     
     // Handle game selection
     gameSelect.addEventListener('change', function() {
+        console.log('Game selected:', this.value);
         if (this.value) {
             loadBossTeams(this.value);
         } else {
@@ -636,6 +644,8 @@ async function loadAvailableGames() {
                 const option = new Option(game, game);
                 gameSelect.add(option);
             });
+        } else {
+            console.error('Failed to load games:', data.error);
         }
     } catch (error) {
         console.error('Failed to load available games:', error);
@@ -645,8 +655,11 @@ async function loadAvailableGames() {
 // Load boss teams for selected game
 async function loadBossTeams(gameName) {
     try {
+        console.log('Loading boss teams for:', gameName);
         const response = await fetch(`${API_BASE_URL}/boss-teams/${gameName}`);
         const data = await response.json();
+        
+        console.log('Boss teams response:', data);
         
         if (response.ok) {
             displayBossTeams(data);
@@ -660,6 +673,7 @@ async function loadBossTeams(gameName) {
 
 // Display boss teams
 function displayBossTeams(data) {
+    console.log('Displaying boss teams:', data);
     const container = document.getElementById('boss-teams-container');
     container.style.display = 'block';
     
@@ -670,26 +684,35 @@ function displayBossTeams(data) {
     
     // Display gym leaders
     if (data.gym_leaders) {
+        console.log('Gym leaders:', Object.keys(data.gym_leaders));
         Object.keys(data.gym_leaders).forEach(leaderName => {
             const leaderDiv = createBossTeamButton(leaderName, data.gym_leaders[leaderName], 'gym_leaders');
             document.getElementById('gym-leaders-list').appendChild(leaderDiv);
         });
+    } else {
+        console.log('No gym leaders found');
     }
     
     // Display elite four
     if (data.elite_four) {
+        console.log('Elite four:', Object.keys(data.elite_four));
         Object.keys(data.elite_four).forEach(memberName => {
             const memberDiv = createBossTeamButton(memberName, data.elite_four[memberName], 'elite_four');
             document.getElementById('elite-four-list').appendChild(memberDiv);
         });
+    } else {
+        console.log('No elite four found');
     }
     
     // Display champion
     if (data.champion) {
+        console.log('Champion:', Object.keys(data.champion));
         Object.keys(data.champion).forEach(championName => {
             const championDiv = createBossTeamButton(championName, data.champion[championName], 'champion');
             document.getElementById('champion-list').appendChild(championDiv);
         });
+    } else {
+        console.log('No champion found');
     }
 }
 
@@ -793,4 +816,45 @@ function loadBossPokemonData(pokemon, role) {
     document.getElementById(`${role}-sp-attack-boost`).value = '0';
     document.getElementById(`${role}-sp-defense-boost`).value = '0';
     document.getElementById(`${role}-speed-boost`).value = '0';
+    
+    // Reset held item
+    document.getElementById(`${role}-item`).value = '';
+}
+
+// Load held items from backend
+async function loadHeldItems() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/held-items`);
+        const data = await response.json();
+        
+        if (response.ok && data.items) {
+            populateItemDropdown(data.items, 'attacker-item');
+            populateItemDropdown(data.items, 'defender-item');
+        }
+    } catch (error) {
+        console.error('Failed to load held items:', error);
+    }
+}
+
+// Populate item dropdown
+function populateItemDropdown(items, dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    dropdown.innerHTML = '<option value="">None</option>';
+    
+    // Add individual items
+    Object.keys(items).forEach(key => {
+        if (key === 'type_boosting_items' || key === 'type_plates') {
+            // Handle nested items
+            if (items[key].items) {
+                Object.keys(items[key].items).forEach(subKey => {
+                    const item = items[key].items[subKey];
+                    const option = new Option(item.name, subKey);
+                    dropdown.add(option);
+                });
+            }
+        } else if (items[key].name) {
+            const option = new Option(items[key].name, key);
+            dropdown.add(option);
+        }
+    });
 }

@@ -51,6 +51,10 @@ def calculate_damage():
         if 'stat_boosts' in attacker_data:
             attacker.stat_boosts = type('StatBoosts', (), attacker_data['stat_boosts'])()
         
+        # Add held item to attacker if provided
+        if 'held_item' in attacker_data and attacker_data['held_item']:
+            attacker.held_item = attacker_data['held_item']
+        
         # Create defender Pokemon
         defender = Pokemon(
             name=defender_data['name'],
@@ -67,6 +71,10 @@ def calculate_damage():
         # Add stat boosts to defender if provided
         if 'stat_boosts' in defender_data:
             defender.stat_boosts = type('StatBoosts', (), defender_data['stat_boosts'])()
+        
+        # Add held item to defender if provided
+        if 'held_item' in defender_data and defender_data['held_item']:
+            defender.held_item = defender_data['held_item']
         
         # Create move
         move = Move(
@@ -87,6 +95,7 @@ def calculate_damage():
                                  weather=data.get('weather'),
                                  ff=data.get('ff', False))
         final = utils.type_check(mults, attacker, move, defender)
+        final = utils.apply_item_effects(final, attacker, move)
         crit = utils.secondary_mults(final, move, 
                                     critical=data.get('critical', False),
                                     charge=data.get('charge', False),
@@ -214,6 +223,17 @@ def get_available_games():
             boss_data = json.load(f)
         
         return jsonify({'games': list(boss_data.keys())})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/held-items')
+def get_held_items():
+    try:
+        held_items_file = os.path.join(DATA_DIR, 'held_items.json')
+        with open(held_items_file, 'r') as f:
+            held_items = json.load(f)
+        
+        return jsonify({'items': held_items})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

@@ -151,9 +151,75 @@ def best_move(attacker, defender, generation=8):
         base=main_calc(move, attacker, defender, generation)
         mults=multipliers(attacker, move, base)
         final = type_check(mults, attacker, move, defender)
+        final = apply_item_effects(final, attacker, move)
         moves[move] = final
 
     max_dam = max(moves.values())
     move_name = [k for k, v in moves.items() if v == max_dam]
 
     return f"Move: {move_name}\nDamage: {max_dam}"
+
+def apply_item_effects(damage, attacker, move):
+    """Apply held item effects to damage calculation"""
+    if not hasattr(attacker, 'held_item') or not attacker.held_item:
+        return damage
+    
+    try:
+        import json
+        import os
+        
+        # Load held items data
+        DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+        held_items_file = os.path.join(DATA_DIR, 'held_items.json')
+        
+        with open(held_items_file, 'r') as f:
+            held_items = json.load(f)
+        
+        # Get item effect
+        item_key = attacker.held_item
+        item = None
+        
+        # Check if it's a nested item (type gems or plates)
+        if item_key in held_items.get('type_boosting_items', {}).get('items', {}):
+            item = held_items['type_boosting_items']['items'][item_key]
+        elif item_key in held_items.get('type_plates', {}).get('items', {}):
+            item = held_items['type_plates']['items'][item_key]
+        elif item_key in held_items:
+            item = held_items[item_key]
+        
+        if not item or 'effect' not in item:
+            return damage
+        
+        effect = item['effect']
+        
+        # Apply attack multiplier
+        if 'attack_multiplier' in effect:
+            damage *= effect['attack_multiplier']
+        
+        # Apply special attack multiplier
+        if 'special_attack_multiplier' in effect:
+            damage *= effect['special_attack_multiplier']
+        
+        # Apply physical multiplier
+        if 'physical_multiplier' in effect and move.cat == 'physical':
+            damage *= effect['physical_multiplier']
+        
+        # Apply special multiplier
+        if 'special_multiplier' in effect and move.cat == 'special':
+            damage *= effect['special_multiplier']
+        
+        # Apply type-specific multiplier
+        if 'type_multiplier' in effect and 'type' in effect:
+            if effect['type'] == move.type:
+                damage *= effect['type_multiplier']
+        
+        # Apply super-effective multiplier
+        if 'super_effective_multiplier' in effect:
+            # This would need type effectiveness check, simplified for now
+            pass
+        
+    except Exception as e:
+        # If item loading fails, just return original damage
+        pass
+    
+    return damage
