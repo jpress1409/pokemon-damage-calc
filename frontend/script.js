@@ -51,10 +51,13 @@ function initializePokemonDropdowns() {
     
     // Add sample Pokemon to datalists
     samplePokemon.forEach(pokemon => {
-        const option1 = new Option(pokemon.name, pokemon.name);
-        const option2 = new Option(pokemon.name, pokemon.name);
-        attackerList.add(option1);
-        defenderList.add(option2);
+        const option1 = document.createElement('option');
+        option1.value = pokemon.name;
+        attackerList.appendChild(option1);
+        
+        const option2 = document.createElement('option');
+        option2.value = pokemon.name;
+        defenderList.appendChild(option2);
     });
     
     // Add change handlers for search inputs
@@ -263,8 +266,9 @@ function populatePokemonDropdown(team, listId) {
     team.forEach(pokemon => {
         const name = pokemon.name || pokemon.Name;
         if (name) {
-            const option = new Option(name, name);
-            datalist.add(option);
+            const option = document.createElement('option');
+            option.value = name;
+            datalist.appendChild(option);
         }
     });
 }
@@ -641,8 +645,10 @@ async function loadAvailableGames() {
             gameSelect.innerHTML = '<option value="">Select a game...</option>';
             
             data.games.forEach(game => {
-                const option = new Option(game, game);
-                gameSelect.add(option);
+                const option = document.createElement('option');
+                option.value = game;
+                option.textContent = game;
+                gameSelect.appendChild(option);
             });
         } else {
             console.error('Failed to load games:', data.error);
@@ -848,13 +854,17 @@ function populateItemDropdown(items, dropdownId) {
             if (items[key].items) {
                 Object.keys(items[key].items).forEach(subKey => {
                     const item = items[key].items[subKey];
-                    const option = new Option(item.name, subKey);
-                    dropdown.add(option);
+                    const option = document.createElement('option');
+                    option.value = subKey;
+                    option.textContent = item.name;
+                    dropdown.appendChild(option);
                 });
             }
         } else if (items[key].name) {
-            const option = new Option(items[key].name, key);
-            dropdown.add(option);
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = items[key].name;
+            dropdown.appendChild(option);
         }
     });
 }
