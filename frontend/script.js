@@ -805,13 +805,13 @@ function loadBossPokemonData(pokemon, role) {
     document.getElementById(`${role}-name`).value = pokemon.name || pokemon.Name || 'Unknown';
     document.getElementById(`${role}-level`).value = pokemon.level || pokemon.Level || 50;
     
-    // Set types
+    // Set types (normalize to lowercase to match select dropdown values)
     const types = pokemon.type || pokemon.Type || [];
     if (Array.isArray(types)) {
-        document.getElementById(`${role}-type1`).value = types[0] || '';
-        document.getElementById(`${role}-type2`).value = types[1] || '';
+        document.getElementById(`${role}-type1`).value = types[0] ? types[0].toLowerCase() : '';
+        document.getElementById(`${role}-type2`).value = types[1] ? types[1].toLowerCase() : '';
     } else {
-        document.getElementById(`${role}-type1`).value = types || '';
+        document.getElementById(`${role}-type1`).value = types ? types.toLowerCase() : '';
         document.getElementById(`${role}-type2`).value = '';
     }
     
