@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify, send_from_directory
 import sys
 import os
+import json
 
 # Ensure backend directory is on the Python path
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE_DIR)
 FRONTEND_DIR = os.path.join(BASE_DIR, '..', 'frontend')
+DATA_DIR = os.path.join(BASE_DIR, 'data')
 
 from classes.pokemon import Pokemon
 from classes.move import Move
@@ -189,6 +191,31 @@ def type_chart():
     return jsonify({
         'type_chart': utils.super_effective_check.__defaults__[0] if hasattr(utils.super_effective_check, '__defaults__') else {}
     })
+
+@app.route('/api/boss-teams/<game_name>')
+def get_boss_teams(game_name):
+    try:
+        boss_data_file = os.path.join(DATA_DIR, 'gym_leaders_e4.json')
+        with open(boss_data_file, 'r') as f:
+            boss_data = json.load(f)
+        
+        if game_name in boss_data:
+            return jsonify(boss_data[game_name])
+        else:
+            return jsonify({'error': 'Game not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/boss-teams')
+def get_available_games():
+    try:
+        boss_data_file = os.path.join(DATA_DIR, 'gym_leaders_e4.json')
+        with open(boss_data_file, 'r') as f:
+            boss_data = json.load(f)
+        
+        return jsonify({'games': list(boss_data.keys())})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

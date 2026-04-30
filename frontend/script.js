@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializePokemonDropdowns();
     setupFileUploadHandlers();
     setupFormHandlers();
+    setupBossTeamImport();
 });
 
 // Initialize Pokemon dropdowns
@@ -600,4 +601,160 @@ function clearAll() {
     // Reset global variables
     currentTeam = [];
     currentOpponent = [];
+}
+
+// Setup boss team import functionality
+function setupBossTeamImport() {
+    const gameSelect = document.getElementById('boss-game-select');
+    
+    // Load available games
+    loadAvailableGames();
+    
+    // Handle game selection
+    gameSelect.addEventListener('change', function() {
+        if (this.value) {
+            loadBossTeams(this.value);
+        } else {
+            document.getElementById('boss-teams-container').style.display = 'none';
+        }
+    });
+}
+
+// Load available games
+async function loadAvailableGames() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/boss-teams`);
+        const data = await response.json();
+        
+        if (response.ok && data.games) {
+            const gameSelect = document.getElementById('boss-game-select');
+            gameSelect.innerHTML = '<option value="">Select a game...</option>';
+            
+            data.games.forEach(game => {
+                const option = new Option(game, game);
+                gameSelect.add(option);
+            });
+        }
+    } catch (error) {
+        console.error('Failed to load available games:', error);
+    }
+}
+
+// Load boss teams for selected game
+async function loadBossTeams(gameName) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/boss-teams/${gameName}`);
+        const data = await response.json();
+        
+        if (response.ok) {
+            displayBossTeams(data);
+        } else {
+            console.error('Failed to load boss teams:', data.error);
+        }
+    } catch (error) {
+        console.error('Failed to load boss teams:', error);
+    }
+}
+
+// Display boss teams
+function displayBossTeams(data) {
+    const container = document.getElementById('boss-teams-container');
+    container.style.display = 'block';
+    
+    // Clear previous boss lists
+    document.getElementById('gym-leaders-list').innerHTML = '';
+    document.getElementById('elite-four-list').innerHTML = '';
+    document.getElementById('champion-list').innerHTML = '';
+    
+    // Display gym leaders
+    if (data.gym_leaders) {
+        Object.keys(data.gym_leaders).forEach(leaderName => {
+            const leaderDiv = createBossTeamButton(leaderName, data.gym_leaders[leaderName], 'gym_leaders');
+            document.getElementById('gym-leaders-list').appendChild(leaderDiv);
+        });
+    }
+    
+    // Display elite four
+    if (data.elite_four) {
+        Object.keys(data.elite_four).forEach(memberName => {
+            const memberDiv = createBossTeamButton(memberName, data.elite_four[memberName], 'elite_four');
+            document.getElementById('elite-four-list').appendChild(memberDiv);
+        });
+    }
+    
+    // Display champion
+    if (data.champion) {
+        Object.keys(data.champion).forEach(championName => {
+            const championDiv = createBossTeamButton(championName, data.champion[championName], 'champion');
+            document.getElementById('champion-list').appendChild(championDiv);
+        });
+    }
+}
+
+// Create boss team button
+function createBossTeamButton(name, team, category) {
+    const div = document.createElement('div');
+    div.className = 'boss-team-item';
+    
+    const button = document.createElement('button');
+    button.className = 'boss-team-btn';
+    button.textContent = name;
+    button.onclick = () => importBossTeam(team);
+    
+    div.appendChild(button);
+    return div;
+}
+
+// Import boss team as opponent
+function importBossTeam(team) {
+    currentOpponent = team;
+    
+    // Display team preview
+    const preview = document.getElementById('opponent-preview');
+    displayTeamPreview(team, preview);
+    
+    // Update file info
+    document.getElementById('opponent-file-info').textContent = 'Imported: Boss Team';
+    
+    // Populate Pokemon dropdown
+    populatePokemonDropdown(team, 'defender-pokemon-list');
+    
+    // Load first Pokemon into form
+    if (team.length > 0) {
+        loadBossPokemonData(team[0], 'defender');
+    }
+    
+    showManualInput('defender');
+}
+
+// Load boss Pokemon data into form
+function loadBossPokemonData(pokemon, role) {
+    // Set basic info
+    document.getElementById(`${role}-name`).value = pokemon.name || pokemon.Name || 'Unknown';
+    document.getElementById(`${role}-level`).value = pokemon.level || pokemon.Level || 50;
+    
+    // Set types
+    const types = pokemon.type || pokemon.Type || [];
+    if (Array.isArray(types)) {
+        document.getElementById(`${role}-type1`).value = types[0] || '';
+        document.getElementById(`${role}-type2`).value = types[1] || '';
+    } else {
+        document.getElementById(`${role}-type1`).value = types || '';
+        document.getElementById(`${role}-type2`).value = '';
+    }
+    
+    // Set stats
+    document.getElementById(`${role}-hp`).value = pokemon.hp || pokemon.HP || 100;
+    document.getElementById(`${role}-attack`).value = pokemon.attack || pokemon.Attack || 75;
+    document.getElementById(`${role}-defense`).value = pokemon.defense || pokemon.Defense || 75;
+    document.getElementById(`${role}-sp-attack`).value = pokemon.special_attack || pokemon.Special_Attack || 75;
+    document.getElementById(`${role}-sp-defense`).value = pokemon.special_defense || pokemon.Special_Defense || 75;
+    document.getElementById(`${role}-speed`).value = pokemon.speed || pokemon.Speed || 75;
+    
+    // Reset stat boosts
+    document.getElementById(`${role}-attack-boost`).value = '0';
+    document.getElementById(`${role}-defense-boost`).value = '0';
+    document.getElementById(`${role}-sp-attack-boost`).value = '0';
+    document.getElementById(`${role}-sp-defense-boost`).value = '0';
+    document.getElementById(`${role}-speed-boost`).value = '0';
 }
