@@ -37,6 +37,7 @@ const sampleMoves = [
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded');
     initializePokemonDropdowns();
     setupFileUploadHandlers();
     setupFormHandlers();
@@ -620,6 +621,8 @@ function setupBossTeamImport() {
         return;
     }
     
+    console.log('Boss game select found, setting up event listener');
+    
     // Load available games
     loadAvailableGames();
     
@@ -637,8 +640,11 @@ function setupBossTeamImport() {
 // Load available games
 async function loadAvailableGames() {
     try {
+        console.log('Fetching available games from:', `${API_BASE_URL}/boss-teams`);
         const response = await fetch(`${API_BASE_URL}/boss-teams`);
         const data = await response.json();
+        
+        console.log('Games response:', data);
         
         if (response.ok && data.games) {
             const gameSelect = document.getElementById('boss-game-select');
@@ -650,6 +656,7 @@ async function loadAvailableGames() {
                 option.textContent = game;
                 gameSelect.appendChild(option);
             });
+            console.log('Games loaded successfully');
         } else {
             console.error('Failed to load games:', data.error);
         }
