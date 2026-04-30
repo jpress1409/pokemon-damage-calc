@@ -695,23 +695,31 @@ function displayBossTeams(data) {
     document.getElementById('elite-four-list').innerHTML = '';
     document.getElementById('champion-list').innerHTML = '';
     
-    // Display gym leaders
+    // Display gym leaders in order (Brilliant Diamond order)
     if (data.gym_leaders) {
         console.log('Gym leaders:', Object.keys(data.gym_leaders));
-        Object.keys(data.gym_leaders).forEach(leaderName => {
-            const leaderDiv = createBossTeamButton(leaderName, data.gym_leaders[leaderName], 'gym_leaders');
-            document.getElementById('gym-leaders-list').appendChild(leaderDiv);
+        const gymLeaderOrder = ['Roark', 'Gardenia', 'Maylene', 'Crasher Wake', 'Fantina', 'Byron', 'Candice', 'Volkner'];
+        
+        gymLeaderOrder.forEach(leaderName => {
+            if (data.gym_leaders[leaderName]) {
+                const leaderDiv = createBossTeamButton(leaderName, data.gym_leaders[leaderName], 'gym_leaders');
+                document.getElementById('gym-leaders-list').appendChild(leaderDiv);
+            }
         });
     } else {
         console.log('No gym leaders found');
     }
     
-    // Display elite four
+    // Display elite four in order
     if (data.elite_four) {
         console.log('Elite four:', Object.keys(data.elite_four));
-        Object.keys(data.elite_four).forEach(memberName => {
-            const memberDiv = createBossTeamButton(memberName, data.elite_four[memberName], 'elite_four');
-            document.getElementById('elite-four-list').appendChild(memberDiv);
+        const eliteFourOrder = ['Aaron', 'Bertha', 'Flint', 'Lucian'];
+        
+        eliteFourOrder.forEach(memberName => {
+            if (data.elite_four[memberName]) {
+                const memberDiv = createBossTeamButton(memberName, data.elite_four[memberName], 'elite_four');
+                document.getElementById('elite-four-list').appendChild(memberDiv);
+            }
         });
     } else {
         console.log('No elite four found');

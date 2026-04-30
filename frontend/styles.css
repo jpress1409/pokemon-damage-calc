@@ -94,9 +94,13 @@ section h4 {
 }
 
 .boss-list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
+}
+
+.gym-leaders-list {
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .boss-team-item {
