@@ -3,7 +3,18 @@ let currentTeam = [];
 let currentOpponent = [];
 let currentBossTeam = [];
 let selectedBossPokemon = null;
+let knockedOutPokemon = [];
 const API_BASE_URL = '/api';
+
+// Game to generation mapping
+const GAME_GENERATIONS = {
+    'Brilliant Diamond': 4,
+    'Fire Red': 3,
+    'Leaf Green': 3,
+    'Emerald': 3,
+    'Scarlet': 9,
+    'Violet': 9
+};
 
 // Sample Pokemon data for demonstration
 const samplePokemon = [
@@ -764,6 +775,7 @@ function createBossTeamButton(name, team, category) {
 // Import boss team as opponent
 function importBossTeam(team) {
     currentBossTeam = team;
+    knockedOutPokemon = []; // Reset knockout tracking
     
     // Display team preview in boss section
     const preview = document.getElementById('boss-team-display');
@@ -772,12 +784,22 @@ function importBossTeam(team) {
     // Show the preview section
     document.getElementById('boss-team-preview').style.display = 'block';
     
+    // Set generation based on selected game
+    const gameSelect = document.getElementById('boss-game-select');
+    const selectedGame = gameSelect.value;
+    if (GAME_GENERATIONS[selectedGame]) {
+        document.getElementById('generation').value = GAME_GENERATIONS[selectedGame];
+    }
+    
     // Make Pokemon clickable in preview
     const pokemonItems = preview.querySelectorAll('div');
     pokemonItems.forEach((item, index) => {
         item.style.cursor = 'pointer';
         item.onclick = () => selectBossPokemon(index);
     });
+    
+    // Update knockout tracker
+    updateKnockoutTracker();
 }
 
 // Select a Pokemon from the boss team
@@ -850,6 +872,139 @@ function loadBossPokemonData(pokemon, role) {
     
     // Reset held item
     document.getElementById(`${role}-item`).value = '';
+}
+
+// Update knockout tracker
+function updateKnockoutTracker() {
+    if (!currentBossTeam || currentBossTeam.length === 0) return;
+    
+    const trackerDiv = document.getElementById('knockout-tracker');
+    const displayDiv = document.getElementById('knockout-display');
+    
+    trackerDiv.style.display = 'block';
+    displayDiv.innerHTML = '';
+    
+    currentBossTeam.forEach((pokemon, index) => {
+        const isKnockedOut = knockedOutPokemon.includes(index);
+        const pokemonDiv = document.createElement('div');
+        pokemonDiv.style.cssText = `
+            margin-bottom: 8px; 
+            padding: 8px; 
+            background: ${isKnockedOut ? 'rgba(255, 100, 100, 0.2)' : 'rgba(255,255,255,0.1)'}; 
+            border-radius: 5px;
+            cursor: pointer;
+            border: ${isKnockedOut ? '2px solid red' : '2px solid transparent'};
+        `;
+        
+        const name = pokemon.name || pokemon.Name || 'Unknown';
+        const types = pokemon.type || pokemon.types || pokemon.Type || 'Unknown';
+        let typeDisplay = Array.isArray(types) ? types.join(' / ') : types;
+        
+        pokemonDiv.innerHTML = `
+            <strong>${name}</strong> (${typeDisplay})
+            <button onclick="toggleKnockout(${index}, event)" style="margin-left: 10px; padding: 2px 8px;">
+                ${isKnockedOut ? 'Revive' : 'Knockout'}
+            </button>
+        `;
+        
+        displayDiv.appendChild(pokemonDiv);
+    });
+    
+    // Suggest next Pokemon
+    suggestNextPokemon();
+}
+
+// Toggle knockout status
+function toggleKnockout(index, event) {
+    event.stopPropagation();
+    
+    const indexInArray = knockedOutPokemon.indexOf(index);
+    if (indexInArray > -1) {
+        knockedOutPokemon.splice(indexInArray, 1);
+    } else {
+        knockedOutPokemon.push(index);
+    }
+    
+    updateKnockoutTracker();
+}
+
+// Suggest next Pokemon based on generation switch logic
+function suggestNextPokemon() {
+    if (!currentBossTeam || currentBossTeam.length === 0) return;
+    
+    const suggestedDiv = document.getElementById('suggested-pokemon');
+    const generation = parseInt(document.getElementById('generation').value) || 8;
+    
+    // Get alive Pokemon
+    const alivePokemon = currentBossTeam.filter((_, index) => !knockedOutPokemon.includes(index));
+    
+    if (alivePokemon.length === 0) {
+        suggestedDiv.innerHTML = '<p>All Pokemon knocked out!</p>';
+        return;
+    }
+    
+    let suggestedPokemon = null;
+    
+    // Generation-specific switch logic
+    switch(generation) {
+        case 3: // Gen 3 (Emerald, Fire Red, Leaf Green)
+            // In Gen 3, AI switches to Pokemon with type advantage
+            suggestedPokemon = suggestByTypeAdvantage(alivePokemon);
+            break;
+        case 4: // Gen 4 (Brilliant Diamond)
+            // In Gen 4, AI considers type advantage and remaining HP
+            suggestedPokemon = suggestByTypeAndHP(alivePokemon);
+            break;
+        case 9: // Gen 9 (Scarlet/Violet)
+            // In Gen 9, AI uses more complex logic including tera types and speed
+            suggestedPokemon = suggestBySpeedAndType(alivePokemon);
+            break;
+        default:
+            // Default to type advantage
+            suggestedPokemon = suggestByTypeAdvantage(alivePokemon);
+    }
+    
+    if (suggestedPokemon) {
+        const name = suggestedPokemon.name || suggestedPokemon.Name || 'Unknown';
+        const types = suggestedPokemon.type || suggestedPokemon.types || suggestedPokemon.Type || 'Unknown';
+        let typeDisplay = Array.isArray(types) ? types.join(' / ') : types;
+        
+        suggestedDiv.innerHTML = `
+            <div style="padding: 10px; background: rgba(100, 200, 100, 0.2); border-radius: 5px; border: 2px solid green;">
+                <strong>${name}</strong> (${typeDisplay})
+            </div>
+        `;
+    }
+}
+
+// Suggest Pokemon by type advantage (Gen 3)
+function suggestByTypeAdvantage(alivePokemon) {
+    // Simple logic: suggest Pokemon with highest speed
+    return alivePokemon.reduce((best, current) => {
+        const bestSpeed = best.speed || best.Speed || 0;
+        const currentSpeed = current.speed || current.Speed || 0;
+        return currentSpeed > bestSpeed ? current : best;
+    });
+}
+
+// Suggest Pokemon by type advantage and HP (Gen 4)
+function suggestByTypeAndHP(alivePokemon) {
+    // Logic: suggest Pokemon with highest HP
+    return alivePokemon.reduce((best, current) => {
+        const bestHP = best.hp || best.HP || 0;
+        const currentHP = current.hp || current.HP || 0;
+        return currentHP > bestHP ? current : best;
+    });
+}
+
+// Suggest Pokemon by speed and type (Gen 9)
+function suggestBySpeedAndType(alivePokemon) {
+    // Logic: suggest fastest Pokemon
+    return alivePokemon.reduce((best, current) => {
+        const bestSpeed = best.speed || best.Speed || 0;
+        const currentSpeed = current.speed || current.Speed || 0;
+        return currentSpeed > bestSpeed ? current : best;
+    });
 }
 
 // Load held items from backend

@@ -143,6 +143,17 @@ section h4 {
     transform: translateY(-2px);
 }
 
+.knockout-display {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.suggested-pokemon {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
 .upload-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
