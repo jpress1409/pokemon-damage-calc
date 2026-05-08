@@ -227,15 +227,16 @@ def calculate_stat(base_stat, level, iv=31, ev=0, nature=1.0, is_hp=False):
 
 def calculate_pokemon_stats(pokemon):
     """Calculate all stats for a Pokemon using IV=31 and EV=0"""
-    level = pokemon.get('level', 50)
+    level = int(pokemon.get('level', 50))
     
     # Get base stats (from PokeAPI data or default to reasonable values)
-    base_hp = pokemon.get('hp', 70)
-    base_attack = pokemon.get('attack', 70)
-    base_defense = pokemon.get('defense', 70)
-    base_sp_attack = pokemon.get('special_attack', 70)
-    base_sp_defense = pokemon.get('special_defense', 70)
-    base_speed = pokemon.get('speed', 70)
+    # Convert to int in case they're stored as strings in JSON
+    base_hp = int(pokemon.get('hp', 70) or 70)
+    base_attack = int(pokemon.get('attack', 70) or 70)
+    base_defense = int(pokemon.get('defense', 70) or 70)
+    base_sp_attack = int(pokemon.get('special_attack', 70) or 70)
+    base_sp_defense = int(pokemon.get('special_defense', 70) or 70)
+    base_speed = int(pokemon.get('speed', 70) or 70)
     
     # Calculate actual stats with IV=31, EV=0, and neutral nature (1.0)
     pokemon['hp'] = calculate_stat(base_hp, level, iv=31, ev=0, is_hp=True)
