@@ -201,6 +201,52 @@ def type_chart():
         'type_chart': utils.super_effective_check.__defaults__[0] if hasattr(utils.super_effective_check, '__defaults__') else {}
     })
 
+def calculate_stat(base_stat, level, iv=31, ev=0, nature=1.0, is_hp=False):
+    """
+    Calculate Pokemon stat using the official formula.
+    
+    HP Formula:
+    HP = floor(((2 × Base Stat + IV + floor(EV / 4)) × Level) / 100) + Level + 10
+    
+    Other Stats Formula:
+    Stat = (floor(((2 × Base Stat + IV + floor(EV / 4)) × Level) / 100) + 5) × Nature
+    """
+    import math
+    
+    # Calculate the base value
+    base_value = (2 * base_stat + iv + math.floor(ev / 4))
+    
+    if is_hp:
+        # HP formula
+        stat = math.floor((base_value * level) / 100) + level + 10
+    else:
+        # Other stats formula
+        stat = (math.floor((base_value * level) / 100) + 5) * nature
+    
+    return int(stat)
+
+def calculate_pokemon_stats(pokemon):
+    """Calculate all stats for a Pokemon using IV=31 and EV=0"""
+    level = pokemon.get('level', 50)
+    
+    # Get base stats (from PokeAPI data or default to reasonable values)
+    base_hp = pokemon.get('hp', 70)
+    base_attack = pokemon.get('attack', 70)
+    base_defense = pokemon.get('defense', 70)
+    base_sp_attack = pokemon.get('special_attack', 70)
+    base_sp_defense = pokemon.get('special_defense', 70)
+    base_speed = pokemon.get('speed', 70)
+    
+    # Calculate actual stats with IV=31, EV=0, and neutral nature (1.0)
+    pokemon['hp'] = calculate_stat(base_hp, level, iv=31, ev=0, is_hp=True)
+    pokemon['attack'] = calculate_stat(base_attack, level, iv=31, ev=0, nature=1.0, is_hp=False)
+    pokemon['defense'] = calculate_stat(base_defense, level, iv=31, ev=0, nature=1.0, is_hp=False)
+    pokemon['special_attack'] = calculate_stat(base_sp_attack, level, iv=31, ev=0, nature=1.0, is_hp=False)
+    pokemon['special_defense'] = calculate_stat(base_sp_defense, level, iv=31, ev=0, nature=1.0, is_hp=False)
+    pokemon['speed'] = calculate_stat(base_speed, level, iv=31, ev=0, nature=1.0, is_hp=False)
+    
+    return pokemon
+
 @app.route('/api/boss-teams/<game_name>')
 def get_boss_teams(game_name):
     try:
@@ -208,10 +254,34 @@ def get_boss_teams(game_name):
         with open(boss_data_file, 'r') as f:
             boss_data = json.load(f)
         
-        if game_name in boss_data:
-            return jsonify(boss_data[game_name])
-        else:
+        if game_name not in boss_data:
             return jsonify({'error': 'Game not found'}), 404
+        
+        # Get the game data and calculate stats for all Pokemon
+        game_data = boss_data[game_name]
+        
+        # Process gym leaders
+        if 'gym_leaders' in game_data:
+            for leader_name, pokemon_list in game_data['gym_leaders'].items():
+                for pokemon in pokemon_list:
+                    if isinstance(pokemon, dict):
+                        calculate_pokemon_stats(pokemon)
+        
+        # Process elite four
+        if 'elite_four' in game_data:
+            for member_name, pokemon_list in game_data['elite_four'].items():
+                for pokemon in pokemon_list:
+                    if isinstance(pokemon, dict):
+                        calculate_pokemon_stats(pokemon)
+        
+        # Process champion
+        if 'champion' in game_data:
+            for champion_name, pokemon_list in game_data['champion'].items():
+                for pokemon in pokemon_list:
+                    if isinstance(pokemon, dict):
+                        calculate_pokemon_stats(pokemon)
+        
+        return jsonify(game_data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
