@@ -869,7 +869,7 @@ async function loadBossTeams(gameName) {
         console.log('Boss teams response:', data);
         
         if (response.ok) {
-            displayBossTeams(data);
+            displayBossTeams(data, gameName);
         } else {
             console.error('Failed to load boss teams:', data.error);
         }
@@ -878,9 +878,37 @@ async function loadBossTeams(gameName) {
     }
 }
 
+// Game-specific gym leader orders
+const GYM_LEADER_ORDERS = {
+    'Red': ['Brock', 'Misty', 'Lt. Surge', 'Erika', 'Koga', 'Sabrina', 'Blaine', 'Giovanni'],
+    'Blue': ['Brock', 'Misty', 'Lt. Surge', 'Erika', 'Koga', 'Sabrina', 'Blaine', 'Giovanni'],
+    'Yellow': ['Brock', 'Misty', 'Lt. Surge', 'Erika', 'Koga', 'Sabrina', 'Blaine', 'Giovanni'],
+    'Gold': ['Falkner', 'Bugsy', 'Whitney', 'Morty', 'Chuck', 'Jasmine', 'Pryce', 'Clair'],
+    'Silver': ['Falkner', 'Bugsy', 'Whitney', 'Morty', 'Chuck', 'Jasmine', 'Pryce', 'Clair'],
+    'Crystal': ['Falkner', 'Bugsy', 'Whitney', 'Morty', 'Chuck', 'Jasmine', 'Pryce', 'Clair'],
+    'Ruby': ['Roxanne', 'Brawly', 'Wattson', 'Flannery', 'Norman', 'Winona', 'Tate and Liza', 'Juan'],
+    'Sapphire': ['Roxanne', 'Brawly', 'Wattson', 'Flannery', 'Norman', 'Winona', 'Tate and Liza', 'Juan'],
+    'Emerald': ['Roxanne', 'Brawly', 'Wattson', 'Flannery', 'Norman', 'Winona', 'Tate and Liza', 'Juan'],
+    'Fire Red': ['Brock', 'Misty', 'Lt. Surge', 'Erika', 'Koga', 'Sabrina', 'Blaine', 'Giovanni'],
+    'Leaf Green': ['Brock', 'Misty', 'Lt. Surge', 'Erika', 'Koga', 'Sabrina', 'Blaine', 'Giovanni'],
+    'Diamond': ['Roark', 'Gardenia', 'Maylene', 'Crasher Wake', 'Fantina', 'Byron', 'Candice', 'Volkner'],
+    'Pearl': ['Roark', 'Gardenia', 'Maylene', 'Crasher Wake', 'Fantina', 'Byron', 'Candice', 'Volkner'],
+    'Platinum': ['Roark', 'Gardenia', 'Maylene', 'Crasher Wake', 'Fantina', 'Byron', 'Candice', 'Volkner'],
+    'Heart Gold': ['Falkner', 'Bugsy', 'Whitney', 'Morty', 'Chuck', 'Jasmine', 'Pryce', 'Clair'],
+    'Soul Silver': ['Falkner', 'Bugsy', 'Whitney', 'Morty', 'Chuck', 'Jasmine', 'Pryce', 'Clair'],
+    'Black': ['Cilan', 'Lenora', 'Burgh', 'Elesa', 'Clay', 'Skyla', 'Brycen', 'Drayden'],
+    'White': ['Cilan', 'Lenora', 'Burgh', 'Elesa', 'Clay', 'Skyla', 'Brycen', 'Drayden'],
+    'Black 2': ['Cheren', 'Roxie', 'Burgh', 'Elesa', 'Clay', 'Skyla', 'Drayden', 'Marlon'],
+    'White 2': ['Cheren', 'Roxie', 'Burgh', 'Elesa', 'Clay', 'Skyla', 'Draylen', 'Marlon'],
+    'Brilliant Diamond': ['Roark', 'Gardenia', 'Maylene', 'Crasher Wake', 'Fantina', 'Byron', 'Candice', 'Volkner'],
+    'Shining Pearl': ['Roark', 'Gardenia', 'Maylene', 'Crasher Wake', 'Fantina', 'Byron', 'Candice', 'Volkner'],
+    'Scarlet': ['Katy', 'Brassius', 'Iono', 'Kofu', 'Larry', 'Ryme', 'Tulip', 'Grusha'],
+    'Violet': ['Katy', 'Brassius', 'Iono', 'Kofu', 'Larry', 'Ryme', 'Tulip', 'Grusha']
+};
+
 // Display boss teams
-function displayBossTeams(data) {
-    console.log('Displaying boss teams:', data);
+function displayBossTeams(data, gameName) {
+    console.log('Displaying boss teams for:', gameName, data);
     const container = document.getElementById('boss-teams-container');
     container.style.display = 'block';
     
@@ -889,14 +917,27 @@ function displayBossTeams(data) {
     document.getElementById('elite-four-list').innerHTML = '';
     document.getElementById('champion-list').innerHTML = '';
     
-    // Display gym leaders in order (Brilliant Diamond order)
+    // Display gym leaders - use game-specific order if available, otherwise show all
     if (data.gym_leaders) {
         console.log('Gym leaders:', Object.keys(data.gym_leaders));
-        const gymLeaderOrder = ['Roark', 'Gardenia', 'Maylene', 'Crasher Wake', 'Fantina', 'Byron', 'Candice', 'Volkner'];
+        const leaders = data.gym_leaders;
+        const order = GYM_LEADER_ORDERS[gameName] || Object.keys(leaders);
         
-        gymLeaderOrder.forEach(leaderName => {
-            if (data.gym_leaders[leaderName]) {
-                const leaderDiv = createBossTeamButton(leaderName, data.gym_leaders[leaderName], 'gym_leaders');
+        // Try to use ordered list first, then add any missing leaders
+        const displayedLeaders = new Set();
+        
+        order.forEach(leaderName => {
+            if (leaders[leaderName]) {
+                const leaderDiv = createBossTeamButton(leaderName, leaders[leaderName], 'gym_leaders');
+                document.getElementById('gym-leaders-list').appendChild(leaderDiv);
+                displayedLeaders.add(leaderName);
+            }
+        });
+        
+        // Add any leaders not in the order list
+        Object.keys(leaders).forEach(leaderName => {
+            if (!displayedLeaders.has(leaderName)) {
+                const leaderDiv = createBossTeamButton(leaderName, leaders[leaderName], 'gym_leaders');
                 document.getElementById('gym-leaders-list').appendChild(leaderDiv);
             }
         });
@@ -904,16 +945,12 @@ function displayBossTeams(data) {
         console.log('No gym leaders found');
     }
     
-    // Display elite four in order
+    // Display elite four
     if (data.elite_four) {
         console.log('Elite four:', Object.keys(data.elite_four));
-        const eliteFourOrder = ['Aaron', 'Bertha', 'Flint', 'Lucian'];
-        
-        eliteFourOrder.forEach(memberName => {
-            if (data.elite_four[memberName]) {
-                const memberDiv = createBossTeamButton(memberName, data.elite_four[memberName], 'elite_four');
-                document.getElementById('elite-four-list').appendChild(memberDiv);
-            }
+        Object.keys(data.elite_four).forEach(memberName => {
+            const memberDiv = createBossTeamButton(memberName, data.elite_four[memberName], 'elite_four');
+            document.getElementById('elite-four-list').appendChild(memberDiv);
         });
     } else {
         console.log('No elite four found');
