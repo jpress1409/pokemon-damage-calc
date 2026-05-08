@@ -282,6 +282,13 @@ def get_boss_teams(game_name):
                     if isinstance(pokemon, dict):
                         calculate_pokemon_stats(pokemon)
         
+        # Process rival battles
+        if 'rival_battles' in game_data:
+            for rival_name, pokemon_list in game_data['rival_battles'].items():
+                for pokemon in pokemon_list:
+                    if isinstance(pokemon, dict):
+                        calculate_pokemon_stats(pokemon)
+        
         return jsonify(game_data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500

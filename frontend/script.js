@@ -916,21 +916,29 @@ function displayBossTeams(data, gameName) {
     document.getElementById('gym-leaders-list').innerHTML = '';
     document.getElementById('elite-four-list').innerHTML = '';
     document.getElementById('champion-list').innerHTML = '';
+    document.getElementById('rival-battles-list').innerHTML = '';
+    
+    // Create case-insensitive lookup for leaders
+    const leaders = data.gym_leaders || {};
+    const leadersLower = {};
+    Object.keys(leaders).forEach(key => {
+        leadersLower[key.toLowerCase()] = { originalKey: key, data: leaders[key] };
+    });
     
     // Display gym leaders - use game-specific order if available, otherwise show all
     if (data.gym_leaders) {
         console.log('Gym leaders:', Object.keys(data.gym_leaders));
-        const leaders = data.gym_leaders;
-        const order = GYM_LEADER_ORDERS[gameName] || Object.keys(leaders);
+        const order = GYM_LEADER_ORDERS[gameName] || Object.keys(data.gym_leaders);
         
-        // Try to use ordered list first, then add any missing leaders
+        // Try to use ordered list first (case-insensitive lookup)
         const displayedLeaders = new Set();
         
         order.forEach(leaderName => {
-            if (leaders[leaderName]) {
-                const leaderDiv = createBossTeamButton(leaderName, leaders[leaderName], 'gym_leaders');
+            const lookup = leadersLower[leaderName.toLowerCase()];
+            if (lookup) {
+                const leaderDiv = createBossTeamButton(lookup.originalKey, lookup.data, 'gym_leaders');
                 document.getElementById('gym-leaders-list').appendChild(leaderDiv);
-                displayedLeaders.add(leaderName);
+                displayedLeaders.add(lookup.originalKey);
             }
         });
         
@@ -965,6 +973,18 @@ function displayBossTeams(data, gameName) {
         });
     } else {
         console.log('No champion found');
+    }
+    
+    // Display rival battles
+    if (data.rival_battles) {
+        console.log('Rival battles:', Object.keys(data.rival_battles));
+        Object.keys(data.rival_battles).forEach(rivalName => {
+            const rivalDiv = createBossTeamButton(rivalName, data.rival_battles[rivalName], 'rival_battles');
+            document.getElementById('rival-battles-list').appendChild(rivalDiv);
+        });
+    } else {
+        console.log('No rival battles found');
+        document.getElementById('rival-battles-list').parentElement.style.display = 'none';
     }
 }
 
