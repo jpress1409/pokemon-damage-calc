@@ -30,7 +30,186 @@ const samplePokemon = [
     { name: 'Lucario', types: ['fighting', 'steel'], stats: { hp: 70, attack: 110, defense: 70, sp_attack: 115, sp_defense: 70, speed: 90 } }
 ];
 
-// Sample moves data
+// Comprehensive moves database (Gen 1-9)
+const MOVES_DATABASE = [
+    // Normal
+    { name: 'Tackle', type: 'normal', power: 40, category: 'physical', accuracy: 100 },
+    { name: 'Quick Attack', type: 'normal', power: 40, category: 'physical', accuracy: 100 },
+    { name: 'Slash', type: 'normal', power: 70, category: 'physical', accuracy: 100 },
+    { name: 'Hyper Beam', type: 'normal', power: 150, category: 'special', accuracy: 90 },
+    { name: 'Giga Impact', type: 'normal', power: 150, category: 'physical', accuracy: 90 },
+    { name: 'Extreme Speed', type: 'normal', power: 80, category: 'physical', accuracy: 100 },
+    { name: 'Facade', type: 'normal', power: 70, category: 'physical', accuracy: 100 },
+    { name: 'Body Slam', type: 'normal', power: 85, category: 'physical', accuracy: 100 },
+    { name: 'Return', type: 'normal', power: 102, category: 'physical', accuracy: 100 },
+    { name: 'Double-Edge', type: 'normal', power: 120, category: 'physical', accuracy: 100 },
+    // Fire
+    { name: 'Ember', type: 'fire', power: 40, category: 'special', accuracy: 100 },
+    { name: 'Flamethrower', type: 'fire', power: 90, category: 'special', accuracy: 100 },
+    { name: 'Fire Blast', type: 'fire', power: 110, category: 'special', accuracy: 85 },
+    { name: 'Fire Punch', type: 'fire', power: 75, category: 'physical', accuracy: 100 },
+    { name: 'Flare Blitz', type: 'fire', power: 120, category: 'physical', accuracy: 100 },
+    { name: 'Heat Wave', type: 'fire', power: 95, category: 'special', accuracy: 90 },
+    { name: 'Blast Burn', type: 'fire', power: 150, category: 'special', accuracy: 90 },
+    { name: 'Mystical Fire', type: 'fire', power: 75, category: 'special', accuracy: 100 },
+    // Water
+    { name: 'Water Gun', type: 'water', power: 40, category: 'special', accuracy: 100 },
+    { name: 'Bubble Beam', type: 'water', power: 65, category: 'special', accuracy: 100 },
+    { name: 'Surf', type: 'water', power: 90, category: 'special', accuracy: 100 },
+    { name: 'Hydro Pump', type: 'water', power: 110, category: 'special', accuracy: 80 },
+    { name: 'Aqua Tail', type: 'water', power: 90, category: 'physical', accuracy: 90 },
+    { name: 'Scald', type: 'water', power: 80, category: 'special', accuracy: 100 },
+    { name: 'Hydro Cannon', type: 'water', power: 150, category: 'special', accuracy: 90 },
+    { name: 'Liquidation', type: 'water', power: 85, category: 'physical', accuracy: 100 },
+    { name: 'Wave Crash', type: 'water', power: 120, category: 'physical', accuracy: 100 },
+    // Electric
+    { name: 'Thunder Shock', type: 'electric', power: 40, category: 'special', accuracy: 100 },
+    { name: 'Thunderbolt', type: 'electric', power: 90, category: 'special', accuracy: 100 },
+    { name: 'Thunder', type: 'electric', power: 110, category: 'special', accuracy: 70 },
+    { name: 'Thunder Punch', type: 'electric', power: 75, category: 'physical', accuracy: 100 },
+    { name: 'Volt Switch', type: 'electric', power: 70, category: 'special', accuracy: 100 },
+    { name: 'Wild Charge', type: 'electric', power: 90, category: 'physical', accuracy: 100 },
+    { name: 'Discharge', type: 'electric', power: 80, category: 'special', accuracy: 100 },
+    // Grass
+    { name: 'Vine Whip', type: 'grass', power: 45, category: 'physical', accuracy: 100 },
+    { name: 'Razor Leaf', type: 'grass', power: 55, category: 'physical', accuracy: 95 },
+    { name: 'Giga Drain', type: 'grass', power: 75, category: 'special', accuracy: 100 },
+    { name: 'Solar Beam', type: 'grass', power: 120, category: 'special', accuracy: 100 },
+    { name: 'Leaf Blade', type: 'grass', power: 90, category: 'physical', accuracy: 100 },
+    { name: 'Energy Ball', type: 'grass', power: 90, category: 'special', accuracy: 100 },
+    { name: 'Petal Dance', type: 'grass', power: 120, category: 'special', accuracy: 100 },
+    { name: 'Frenzy Plant', type: 'grass', power: 150, category: 'special', accuracy: 90 },
+    { name: 'Leaf Storm', type: 'grass', power: 130, category: 'special', accuracy: 90 },
+    { name: 'Seed Bomb', type: 'grass', power: 80, category: 'physical', accuracy: 100 },
+    // Ice
+    { name: 'Ice Shard', type: 'ice', power: 40, category: 'physical', accuracy: 100 },
+    { name: 'Ice Beam', type: 'ice', power: 90, category: 'special', accuracy: 100 },
+    { name: 'Blizzard', type: 'ice', power: 110, category: 'special', accuracy: 70 },
+    { name: 'Ice Punch', type: 'ice', power: 75, category: 'physical', accuracy: 100 },
+    { name: 'Icicle Crash', type: 'ice', power: 85, category: 'physical', accuracy: 90 },
+    { name: 'Freeze-Dry', type: 'ice', power: 70, category: 'special', accuracy: 100 },
+    // Fighting
+    { name: 'Karate Chop', type: 'fighting', power: 50, category: 'physical', accuracy: 100 },
+    { name: 'Dynamic Punch', type: 'fighting', power: 100, category: 'physical', accuracy: 50 },
+    { name: 'Close Combat', type: 'fighting', power: 120, category: 'physical', accuracy: 100 },
+    { name: 'Aura Sphere', type: 'fighting', power: 80, category: 'special', accuracy: 100 },
+    { name: 'Focus Blast', type: 'fighting', power: 120, category: 'special', accuracy: 70 },
+    { name: 'High Jump Kick', type: 'fighting', power: 130, category: 'physical', accuracy: 90 },
+    { name: 'Superpower', type: 'fighting', power: 120, category: 'physical', accuracy: 100 },
+    { name: 'Mach Punch', type: 'fighting', power: 40, category: 'physical', accuracy: 100 },
+    { name: 'Cross Chop', type: 'fighting', power: 100, category: 'physical', accuracy: 80 },
+    // Poison
+    { name: 'Poison Sting', type: 'poison', power: 15, category: 'physical', accuracy: 100 },
+    { name: 'Acid', type: 'poison', power: 40, category: 'special', accuracy: 100 },
+    { name: 'Sludge Bomb', type: 'poison', power: 90, category: 'special', accuracy: 100 },
+    { name: 'Poison Jab', type: 'poison', power: 80, category: 'physical', accuracy: 100 },
+    { name: 'Sludge Wave', type: 'poison', power: 95, category: 'special', accuracy: 100 },
+    { name: 'Gunk Shot', type: 'poison', power: 120, category: 'physical', accuracy: 80 },
+    { name: 'Cross Poison', type: 'poison', power: 70, category: 'physical', accuracy: 100 },
+    // Ground
+    { name: 'Sand Attack', type: 'ground', power: 0, category: 'status', accuracy: 100 },
+    { name: 'Mud Shot', type: 'ground', power: 55, category: 'special', accuracy: 95 },
+    { name: 'Dig', type: 'ground', power: 80, category: 'physical', accuracy: 100 },
+    { name: 'Earthquake', type: 'ground', power: 100, category: 'physical', accuracy: 100 },
+    { name: 'Mud Bomb', type: 'ground', power: 65, category: 'special', accuracy: 85 },
+    { name: 'Earth Power', type: 'ground', power: 90, category: 'special', accuracy: 100 },
+    { name: 'High Horsepower', type: 'ground', power: 95, category: 'physical', accuracy: 95 },
+    { name: 'Scorching Sands', type: 'ground', power: 70, category: 'special', accuracy: 100 },
+    // Flying
+    { name: 'Gust', type: 'flying', power: 40, category: 'special', accuracy: 100 },
+    { name: 'Peck', type: 'flying', power: 35, category: 'physical', accuracy: 100 },
+    { name: 'Aerial Ace', type: 'flying', power: 60, category: 'physical', accuracy: 100 },
+    { name: 'Drill Peck', type: 'flying', power: 80, category: 'physical', accuracy: 100 },
+    { name: 'Air Slash', type: 'flying', power: 75, category: 'special', accuracy: 95 },
+    { name: 'Brave Bird', type: 'flying', power: 120, category: 'physical', accuracy: 100 },
+    { name: 'Hurricane', type: 'flying', power: 110, category: 'special', accuracy: 70 },
+    { name: 'Acrobatics', type: 'flying', power: 55, category: 'physical', accuracy: 100 },
+    // Psychic
+    { name: 'Confusion', type: 'psychic', power: 50, category: 'special', accuracy: 100 },
+    { name: 'Psybeam', type: 'psychic', power: 65, category: 'special', accuracy: 100 },
+    { name: 'Psychic', type: 'psychic', power: 90, category: 'special', accuracy: 100 },
+    { name: 'Psycho Cut', type: 'psychic', power: 70, category: 'physical', accuracy: 100 },
+    { name: 'Zen Headbutt', type: 'psychic', power: 80, category: 'physical', accuracy: 90 },
+    { name: 'Psyshock', type: 'psychic', power: 80, category: 'special', accuracy: 100 },
+    { name: 'Future Sight', type: 'psychic', power: 120, category: 'special', accuracy: 100 },
+    { name: 'Stored Power', type: 'psychic', power: 20, category: 'special', accuracy: 100 },
+    // Bug
+    { name: 'Bug Bite', type: 'bug', power: 60, category: 'physical', accuracy: 100 },
+    { name: 'Signal Beam', type: 'bug', power: 75, category: 'special', accuracy: 100 },
+    { name: 'X-Scissor', type: 'bug', power: 80, category: 'physical', accuracy: 100 },
+    { name: 'Bug Buzz', type: 'bug', power: 90, category: 'special', accuracy: 100 },
+    { name: 'Megahorn', type: 'bug', power: 120, category: 'physical', accuracy: 85 },
+    { name: 'Leech Life', type: 'bug', power: 80, category: 'physical', accuracy: 100 },
+    { name: 'Lunge', type: 'bug', power: 80, category: 'physical', accuracy: 100 },
+    // Rock
+    { name: 'Rock Throw', type: 'rock', power: 50, category: 'physical', accuracy: 90 },
+    { name: 'Rollout', type: 'rock', power: 30, category: 'physical', accuracy: 90 },
+    { name: 'Ancient Power', type: 'rock', power: 60, category: 'special', accuracy: 100 },
+    { name: 'Rock Slide', type: 'rock', power: 75, category: 'physical', accuracy: 90 },
+    { name: 'Power Gem', type: 'rock', power: 80, category: 'special', accuracy: 100 },
+    { name: 'Stone Edge', type: 'rock', power: 100, category: 'physical', accuracy: 80 },
+    { name: 'Head Smash', type: 'rock', power: 150, category: 'physical', accuracy: 80 },
+    { name: 'Meteor Beam', type: 'rock', power: 120, category: 'special', accuracy: 90 },
+    // Ghost
+    { name: 'Lick', type: 'ghost', power: 30, category: 'physical', accuracy: 100 },
+    { name: 'Shadow Punch', type: 'ghost', power: 60, category: 'physical', accuracy: 100 },
+    { name: 'Shadow Ball', type: 'ghost', power: 80, category: 'special', accuracy: 100 },
+    { name: 'Shadow Claw', type: 'ghost', power: 70, category: 'physical', accuracy: 100 },
+    { name: 'Hex', type: 'ghost', power: 65, category: 'special', accuracy: 100 },
+    { name: 'Phantom Force', type: 'ghost', power: 90, category: 'physical', accuracy: 100 },
+    { name: 'Shadow Sneak', type: 'ghost', power: 40, category: 'physical', accuracy: 100 },
+    { name: 'Poltergeist', type: 'ghost', power: 110, category: 'physical', accuracy: 90 },
+    // Dragon
+    { name: 'Dragon Breath', type: 'dragon', power: 60, category: 'special', accuracy: 100 },
+    { name: 'Dragon Claw', type: 'dragon', power: 80, category: 'physical', accuracy: 100 },
+    { name: 'Dragon Pulse', type: 'dragon', power: 85, category: 'special', accuracy: 100 },
+    { name: 'Outrage', type: 'dragon', power: 120, category: 'physical', accuracy: 100 },
+    { name: 'Draco Meteor', type: 'dragon', power: 130, category: 'special', accuracy: 90 },
+    { name: 'Dragon Rush', type: 'dragon', power: 100, category: 'physical', accuracy: 75 },
+    { name: 'Dragon Tail', type: 'dragon', power: 60, category: 'physical', accuracy: 90 },
+    { name: 'Breaking Swipe', type: 'dragon', power: 60, category: 'physical', accuracy: 100 },
+    // Dark
+    { name: 'Bite', type: 'dark', power: 60, category: 'physical', accuracy: 100 },
+    { name: 'Feint Attack', type: 'dark', power: 60, category: 'physical', accuracy: 100 },
+    { name: 'Crunch', type: 'dark', power: 80, category: 'physical', accuracy: 100 },
+    { name: 'Dark Pulse', type: 'dark', power: 80, category: 'special', accuracy: 100 },
+    { name: 'Night Slash', type: 'dark', power: 70, category: 'physical', accuracy: 100 },
+    { name: 'Sucker Punch', type: 'dark', power: 70, category: 'physical', accuracy: 100 },
+    { name: 'Foul Play', type: 'dark', power: 95, category: 'physical', accuracy: 100 },
+    { name: 'Darkest Lariat', type: 'dark', power: 85, category: 'physical', accuracy: 100 },
+    { name: 'Throat Chop', type: 'dark', power: 80, category: 'physical', accuracy: 100 },
+    // Steel
+    { name: 'Metal Claw', type: 'steel', power: 50, category: 'physical', accuracy: 95 },
+    { name: 'Steel Wing', type: 'steel', power: 70, category: 'physical', accuracy: 90 },
+    { name: 'Iron Head', type: 'steel', power: 80, category: 'physical', accuracy: 100 },
+    { name: 'Flash Cannon', type: 'steel', power: 80, category: 'special', accuracy: 100 },
+    { name: 'Meteor Mash', type: 'steel', power: 90, category: 'physical', accuracy: 90 },
+    { name: 'Bullet Punch', type: 'steel', power: 40, category: 'physical', accuracy: 100 },
+    { name: 'Steel Beam', type: 'steel', power: 140, category: 'special', accuracy: 95 },
+    { name: 'Heavy Slam', type: 'steel', power: 100, category: 'physical', accuracy: 100 },
+    // Fairy
+    { name: 'Fairy Wind', type: 'fairy', power: 40, category: 'special', accuracy: 100 },
+    { name: 'Draining Kiss', type: 'fairy', power: 50, category: 'special', accuracy: 100 },
+    { name: 'Play Rough', type: 'fairy', power: 90, category: 'physical', accuracy: 90 },
+    { name: 'Moonblast', type: 'fairy', power: 95, category: 'special', accuracy: 100 },
+    { name: 'Dazzling Gleam', type: 'fairy', power: 80, category: 'special', accuracy: 100 },
+    { name: 'Spirit Break', type: 'fairy', power: 75, category: 'physical', accuracy: 100 }
+];
+
+// Common abilities database
+const ABILITIES_DATABASE = [
+    'Overgrow', 'Blaze', 'Torrent', 'Shield Dust', 'Shed Skin', 'Compound Eyes', 'Swarm',
+    'Keen Eye', 'Run Away', 'Static', 'Lightning Rod', 'Sand Veil', 'Poison Point', ' rivalry',
+    'Cute Charm', 'Magic Guard', 'Flash Fire', 'Drought', 'Rain Dish', 'Synchronize',
+    'Inner Focus', 'Intimidate', 'Guts', 'Thick Fat', 'Huge Power', 'Levitate',
+    'Effect Spore', 'Pickup', 'Technician', 'Skill Link', 'Pressure', 'Super Luck',
+    'Serene Grace', 'Sturdy', 'Damp', 'Volt Absorb', 'Water Absorb', 'Rock Head',
+    'Reckless', 'Iron Fist', 'Natural Cure', 'Quick Feet', 'Download', 'Adaptability',
+    'Regenerator', 'Defiant', 'Justified', 'Moxie', 'Speed Boost', 'Protean',
+    'Intrepid Sword', 'Libero', 'Unseen Fist', 'Chilling Neigh', 'Grim Neigh'
+];
+
+// Sample moves data (kept for backwards compatibility)
 const sampleMoves = [
     { name: 'Thunderbolt', type: 'electric', power: 90, category: 'special' },
     { name: 'Flamethrower', type: 'fire', power: 90, category: 'special' },
@@ -46,6 +225,236 @@ const sampleMoves = [
     { name: 'Surf', type: 'water', power: 90, category: 'special' }
 ];
 
+// Search and fill move details
+function searchMove(input, role) {
+    const query = input.value.toLowerCase();
+    if (query.length < 2) return;
+    
+    const datalistId = `${role}-moves-list`;
+    let datalist = document.getElementById(datalistId);
+    
+    if (!datalist) {
+        datalist = document.createElement('datalist');
+        datalist.id = datalistId;
+        document.body.appendChild(datalist);
+    }
+    
+    // Clear and populate with matching moves
+    datalist.innerHTML = '';
+    const matches = MOVES_DATABASE.filter(move => 
+        move.name.toLowerCase().includes(query)
+    ).slice(0, 10);
+    
+    matches.forEach(move => {
+        const option = document.createElement('option');
+        option.value = move.name;
+        option.dataset.type = move.type;
+        option.dataset.power = move.power;
+        option.dataset.category = move.category;
+        datalist.appendChild(option);
+    });
+}
+
+// Fill move details when selected
+function fillMoveDetails(input, role) {
+    const moveName = input.value;
+    const move = MOVES_DATABASE.find(m => m.name.toLowerCase() === moveName.toLowerCase());
+    
+    if (!move) return;
+    
+    // Find the move input container
+    const moveContainer = input.closest('.move-input');
+    if (!moveContainer) return;
+    
+    // Fill in the hidden move name
+    const nameInput = moveContainer.querySelector('.move-name');
+    if (nameInput) nameInput.value = move.name;
+    
+    // Fill in type
+    const typeSelect = moveContainer.querySelector('.move-type');
+    if (typeSelect) {
+        typeSelect.value = move.type;
+        typeSelect.disabled = false;
+    }
+    
+    // Fill in power
+    const powerInput = moveContainer.querySelector('.move-power');
+    if (powerInput) {
+        powerInput.value = move.power;
+        powerInput.disabled = false;
+    }
+    
+    // Fill in category
+    const categorySelect = moveContainer.querySelector('.move-category');
+    if (categorySelect) {
+        categorySelect.value = move.category;
+        categorySelect.disabled = false;
+    }
+}
+
+// Load abilities into dropdowns
+function loadAbilities() {
+    const attackerAbility = document.getElementById('attacker-ability');
+    const defenderAbility = document.getElementById('defender-ability');
+    
+    if (attackerAbility) {
+        attackerAbility.innerHTML = '<option value="">None</option>';
+        ABILITIES_DATABASE.forEach(ability => {
+            const option = document.createElement('option');
+            option.value = ability.toLowerCase().replace(/\s+/g, '-');
+            option.textContent = ability;
+            attackerAbility.appendChild(option);
+        });
+    }
+    
+    if (defenderAbility) {
+        defenderAbility.innerHTML = '<option value="">None</option>';
+        ABILITIES_DATABASE.forEach(ability => {
+            const option = document.createElement('option');
+            option.value = ability.toLowerCase().replace(/\s+/g, '-');
+            option.textContent = ability;
+            defenderAbility.appendChild(option);
+        });
+    }
+}
+
+// Predict enemy's next move using game AI logic
+function predictEnemyMove() {
+    const defenderMoves = [];
+    const moveInputs = document.querySelectorAll('#defender-moves .move-input');
+    
+    moveInputs.forEach(moveInput => {
+        const name = moveInput.querySelector('.move-name')?.value;
+        const type = moveInput.querySelector('.move-type')?.value;
+        const power = parseInt(moveInput.querySelector('.move-power')?.value) || 0;
+        const category = moveInput.querySelector('.move-category')?.value;
+        
+        if (name && power > 0) {
+            defenderMoves.push({ name, type, power, category });
+        }
+    });
+    
+    if (defenderMoves.length === 0) return null;
+    
+    // Game AI Logic: Prioritize moves based on:
+    // 1. STAB (Same Type Attack Bonus) - 40% weight
+    // 2. Super effective moves - 35% weight
+    // 3. Highest base power - 25% weight
+    
+    const attackerTypes = [
+        document.getElementById('attacker-type1')?.value,
+        document.getElementById('attacker-type2')?.value
+    ].filter(Boolean);
+    
+    const defenderTypes = [
+        document.getElementById('defender-type1')?.value,
+        document.getElementById('defender-type2')?.value
+    ].filter(Boolean);
+    
+    let bestMove = null;
+    let bestScore = -1;
+    
+    defenderMoves.forEach(move => {
+        let score = 0;
+        
+        // STAB bonus (40 points)
+        if (defenderTypes.includes(move.type)) {
+            score += 40;
+        }
+        
+        // Super effective check (35 points)
+        const effectiveness = getEffectiveness(move.type, attackerTypes);
+        if (effectiveness > 1) {
+            score += 35 * effectiveness;
+        } else if (effectiveness < 1) {
+            score -= 35 * (1 - effectiveness);
+        }
+        
+        // Power weighting (0-25 points)
+        score += (move.power / 150) * 25;
+        
+        if (score > bestScore) {
+            bestScore = score;
+            bestMove = move;
+        }
+    });
+    
+    return bestMove;
+}
+
+// Get type effectiveness
+function getEffectiveness(attackType, defenderTypes) {
+    const typeChart = {
+        normal: { rock: 0.5, ghost: 0, steel: 0.5 },
+        fire: { fire: 0.5, water: 0.5, grass: 2, ice: 2, bug: 2, rock: 0.5, dragon: 0.5, steel: 2 },
+        water: { fire: 2, water: 0.5, grass: 0.5, ground: 2, rock: 2, dragon: 0.5 },
+        electric: { water: 2, electric: 0.5, grass: 0.5, ground: 0, flying: 2, dragon: 0.5 },
+        grass: { fire: 0.5, water: 2, grass: 0.5, poison: 0.5, ground: 2, flying: 0.5, bug: 0.5, rock: 2, dragon: 0.5, steel: 0.5 },
+        ice: { fire: 0.5, water: 0.5, grass: 2, ice: 0.5, ground: 2, flying: 2, dragon: 2, steel: 0.5 },
+        fighting: { normal: 2, ice: 2, poison: 0.5, flying: 0.5, psychic: 0.5, bug: 0.5, rock: 2, ghost: 0, dark: 2, steel: 2, fairy: 0.5 },
+        poison: { grass: 2, poison: 0.5, ground: 0.5, rock: 0.5, ghost: 0.5, steel: 0, fairy: 2 },
+        ground: { fire: 2, electric: 2, grass: 0.5, poison: 2, flying: 0, bug: 0.5, rock: 2, steel: 2 },
+        flying: { electric: 0.5, grass: 2, fighting: 2, bug: 2, rock: 0.5, steel: 0.5 },
+        psychic: { fighting: 2, poison: 2, psychic: 0.5, dark: 0, steel: 0.5 },
+        bug: { fire: 0.5, grass: 2, fighting: 0.5, poison: 0.5, flying: 0.5, psychic: 2, ghost: 0.5, dark: 2, steel: 0.5, fairy: 0.5 },
+        rock: { fire: 2, ice: 2, fighting: 0.5, ground: 0.5, flying: 2, bug: 2, steel: 0.5 },
+        ghost: { normal: 0, psychic: 2, ghost: 2, dark: 0.5 },
+        dragon: { dragon: 2, steel: 0.5, fairy: 0 },
+        dark: { fighting: 0.5, psychic: 2, ghost: 2, dark: 0.5, fairy: 0.5 },
+        steel: { fire: 0.5, water: 0.5, electric: 0.5, ice: 2, rock: 2, steel: 0.5, fairy: 2 },
+        fairy: { fire: 0.5, fighting: 2, poison: 0.5, dragon: 2, dark: 2, steel: 0.5 }
+    };
+    
+    let effectiveness = 1;
+    defenderTypes.forEach(defType => {
+        const multipliers = typeChart[attackType] || {};
+        effectiveness *= multipliers[defType] !== undefined ? multipliers[defType] : 1;
+    });
+    
+    return effectiveness;
+}
+
+// Update enemy prediction display
+function updateEnemyPrediction() {
+    const predictedMove = predictEnemyMove();
+    const predictionCard = document.getElementById('enemy-prediction-card');
+    
+    if (!predictedMove || !predictionCard) {
+        if (predictionCard) predictionCard.style.display = 'none';
+        return;
+    }
+    
+    predictionCard.style.display = 'block';
+    document.getElementById('predicted-move').textContent = predictedMove.name;
+    
+    // Calculate confidence based on move score
+    let confidence = 'Medium';
+    const defenderTypes = [
+        document.getElementById('defender-type1')?.value,
+        document.getElementById('defender-type2')?.value
+    ].filter(Boolean);
+    
+    if (defenderTypes.includes(predictedMove.type)) {
+        confidence = 'High (STAB)';
+    }
+    
+    const effectiveness = getEffectiveness(predictedMove.type, [
+        document.getElementById('attacker-type1')?.value,
+        document.getElementById('attacker-type2')?.value
+    ].filter(Boolean));
+    
+    if (effectiveness >= 2) {
+        confidence = 'High (Super Effective)';
+    }
+    
+    document.getElementById('prediction-confidence').textContent = confidence;
+    
+    // Calculate expected damage (simplified)
+    const attackerHP = parseInt(document.getElementById('attacker-hp')?.value) || 100;
+    const damagePercent = Math.min(100, Math.round((predictedMove.power / 150) * 50));
+    document.getElementById('predicted-damage').textContent = `~${damagePercent}% HP`;
+}
+
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Content Loaded');
@@ -56,6 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupFormHandlers();
     setupBossTeamImport();
     loadHeldItems();
+    loadAbilities();
 });
 
 // Initialize Pokemon dropdowns
@@ -384,94 +794,11 @@ function setupFormHandlers() {
     // Add initial move for attacker
     addMove('attacker');
     
-    // Add event listeners to update user stats display
-    const attackerInputs = document.querySelectorAll('#attacker-form input, #attacker-form select');
-    attackerInputs.forEach(input => {
-        input.addEventListener('change', updateUserStatsDisplay);
-        input.addEventListener('input', updateUserStatsDisplay);
+    // Add event listeners to update enemy prediction when defender changes
+    const defenderInputs = document.querySelectorAll('#defender-form input, #defender-form select');
+    defenderInputs.forEach(input => {
+        input.addEventListener('change', updateEnemyPrediction);
     });
-}
-
-// Update user stats display
-function updateUserStatsDisplay() {
-    const statsSection = document.getElementById('user-pokemon-stats');
-    const statsDisplay = document.getElementById('user-stats-display');
-    
-    const name = document.getElementById('attacker-name').value;
-    const level = document.getElementById('attacker-level').value;
-    const type1 = document.getElementById('attacker-type1').value;
-    const type2 = document.getElementById('attacker-type2').value;
-    
-    if (!name) {
-        statsSection.style.display = 'none';
-        return;
-    }
-    
-    statsSection.style.display = 'block';
-    
-    const hp = document.getElementById('attacker-hp').value || 0;
-    const attack = document.getElementById('attacker-attack').value || 0;
-    const defense = document.getElementById('attacker-defense').value || 0;
-    const spAttack = document.getElementById('attacker-sp-attack').value || 0;
-    const spDefense = document.getElementById('attacker-sp-defense').value || 0;
-    const speed = document.getElementById('attacker-speed').value || 0;
-    
-    const attackBoost = document.getElementById('attacker-attack-boost').value || 0;
-    const defenseBoost = document.getElementById('attacker-defense-boost').value || 0;
-    const spAttackBoost = document.getElementById('attacker-sp-attack-boost').value || 0;
-    const spDefenseBoost = document.getElementById('attacker-sp-defense-boost').value || 0;
-    const speedBoost = document.getElementById('attacker-speed-boost').value || 0;
-    
-    // Calculate boosted stats
-    const calculateBoostedStat = (base, boost) => {
-        if (boost == 0) return base;
-        const multiplier = 1 + (0.5 * boost);
-        return Math.round(base * multiplier);
-    };
-    
-    const boostedAttack = calculateBoostedStat(attack, attackBoost);
-    const boostedDefense = calculateBoostedStat(defense, defenseBoost);
-    const boostedSpAttack = calculateBoostedStat(spAttack, spAttackBoost);
-    const boostedSpDefense = calculateBoostedStat(spDefense, spDefenseBoost);
-    const boostedSpeed = calculateBoostedStat(speed, speedBoost);
-    
-    statsDisplay.innerHTML = `
-        <div class="stat-box">
-            <h5>${name}</h5>
-            <div class="stat-value">Lv. ${level}</div>
-            <div class="stat-label">${type1}${type2 ? ' / ' + type2 : ''}</div>
-        </div>
-        <div class="stat-box">
-            <h5>HP</h5>
-            <div class="stat-value">${hp}</div>
-            <div class="stat-label">Hit Points</div>
-        </div>
-        <div class="stat-box">
-            <h5>Attack</h5>
-            <div class="stat-value">${boostedAttack}</div>
-            <div class="stat-label">Base: ${attack} ${attackBoost > 0 ? `(+${attackBoost})` : ''}</div>
-        </div>
-        <div class="stat-box">
-            <h5>Defense</h5>
-            <div class="stat-value">${boostedDefense}</div>
-            <div class="stat-label">Base: ${defense} ${defenseBoost > 0 ? `(+${defenseBoost})` : ''}</div>
-        </div>
-        <div class="stat-box">
-            <h5>Sp. Attack</h5>
-            <div class="stat-value">${boostedSpAttack}</div>
-            <div class="stat-label">Base: ${spAttack} ${spAttackBoost > 0 ? `(+${spAttackBoost})` : ''}</div>
-        </div>
-        <div class="stat-box">
-            <h5>Sp. Defense</h5>
-            <div class="stat-value">${boostedSpDefense}</div>
-            <div class="stat-label">Base: ${spDefense} ${spDefenseBoost > 0 ? `(+${spDefenseBoost})` : ''}</div>
-        </div>
-        <div class="stat-box">
-            <h5>Speed</h5>
-            <div class="stat-value">${boostedSpeed}</div>
-            <div class="stat-label">Base: ${speed} ${speedBoost > 0 ? `(+${speedBoost})` : ''}</div>
-        </div>
-    `;
 }
 
 // Show manual input form
@@ -719,6 +1046,9 @@ function displayResults(result) {
     
     // Hide best move result
     document.getElementById('best-move-result').style.display = 'none';
+    
+    // Update enemy prediction
+    updateEnemyPrediction();
 }
 
 // Display best move result

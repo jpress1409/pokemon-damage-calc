@@ -87,12 +87,6 @@
             <section class="manual-input-section">
                 <h2>🎯 Manual Battle Setup</h2>
                 
-                <!-- User Pokemon Stats Display -->
-                <div id="user-pokemon-stats" style="display: none; margin-bottom: 30px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;">
-                    <h4>📊 Your Pokemon Stats:</h4>
-                    <div id="user-stats-display" class="user-stats-display"></div>
-                </div>
-                
                 <div class="pokemon-setup">
                     <!-- Attacker Pokemon -->
                     <div class="pokemon-card attacker">
@@ -175,6 +169,12 @@
                                         <option value="">None</option>
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <label>Ability:</label>
+                                    <select id="attacker-ability">
+                                        <option value="">None</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="stats-grid">
@@ -248,13 +248,15 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="moves-section">
                                 <h4>Moves</h4>
                                 <div id="attacker-moves">
                                     <div class="move-input">
-                                        <input type="text" placeholder="Move name" class="move-name">
-                                        <select class="move-type">
+                                        <input type="text" placeholder="Search move..." class="move-search" list="attacker-moves-list" oninput="searchMove(this, 'attacker')" onchange="fillMoveDetails(this, 'attacker')">
+                                        <datalist id="attacker-moves-list"></datalist>
+                                        <input type="hidden" class="move-name">
+                                        <select class="move-type" disabled>
+                                            <option value="">Type</option>
                                             <option value="normal">Normal</option>
                                             <option value="fire">Fire</option>
                                             <option value="water">Water</option>
@@ -274,8 +276,9 @@
                                             <option value="steel">Steel</option>
                                             <option value="fairy">Fairy</option>
                                         </select>
-                                        <input type="number" placeholder="Power" class="move-power" min="0">
-                                        <select class="move-category">
+                                        <input type="number" placeholder="BP" class="move-power" min="0" max="250" disabled>
+                                        <select class="move-category" disabled>
+                                            <option value="">Category</option>
                                             <option value="physical">Physical</option>
                                             <option value="special">Special</option>
                                             <option value="status">Status</option>
@@ -358,14 +361,18 @@
                                         <option value="dark">Dark</option>
                                         <option value="steel">Steel</option>
                                         <option value="fairy">Fairy</option>
-                                    </select>
-                                </div>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>Held Item:</label>
                                     <select id="defender-item">
+                                        <option value="">None</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ability:</label>
+                                    <select id="defender-ability">
                                         <option value="">None</option>
                                     </select>
                                 </div>
@@ -538,6 +545,24 @@
                                 <span class="result-label">Effectiveness:</span>
                                 <span class="result-value" id="type-effectiveness">-</span>
                             </div>
+                        </div>
+                        <div class="result-card" id="enemy-prediction-card" style="display: none;">
+                            <h4>🎯 Enemy Move Prediction</h4>
+                            <div class="result-item">
+                                <span class="result-label">Likely Move:</span>
+                                <span class="result-value" id="predicted-move">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Confidence:</span>
+                                <span class="result-value" id="prediction-confidence">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Expected Damage:</span>
+                                <span class="result-value" id="predicted-damage">-</span>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <h4>Type Effectiveness</h4>
                             <div class="result-item">
                                 <span class="result-label">STAB:</span>
                                 <span class="result-value" id="stab">-</span>
