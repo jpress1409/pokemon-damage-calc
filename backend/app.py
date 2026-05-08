@@ -237,5 +237,82 @@ def get_held_items():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/pokemon/<pokemon_name>')
+def get_pokemon_from_api(pokemon_name):
+    """Fetch Pokemon data from PokeAPI dynamically"""
+    try:
+        import requests
+        
+        # Normalize Pokemon name for API
+        api_name = pokemon_name.lower().replace(' ', '-').replace('.', '').replace("'", '')
+        
+        # Fetch from PokeAPI
+        response = requests.get(f'https://pokeapi.co/api/v2/pokemon/{api_name}', timeout=10)
+        
+        if response.status_code == 200:
+            data = response.json()
+            
+            # Extract types
+            types = [t['type']['name'] for t in data['types']]
+            
+            # Extract stats
+            stats = {}
+            for stat in data['stats']:
+                stat_name = stat['stat']['name']
+                base_stat = stat['base_stat']
+                if stat_name == 'hp':
+                    stats['hp'] = base_stat
+                elif stat_name == 'attack':
+                    stats['attack'] = base_stat
+                elif stat_name == 'defense':
+                    stats['defense'] = base_stat
+                elif stat_name == 'special-attack':
+                    stats['special_attack'] = base_stat
+                elif stat_name == 'special-defense':
+                    stats['special_defense'] = base_stat
+                elif stat_name == 'speed':
+                    stats['speed'] = base_stat
+            
+            # Extract abilities (first non-hidden ability)
+            abilities = [a['ability']['name'] for a in data['abilities'] if not a['is_hidden']]
+            ability = abilities[0] if abilities else data['abilities'][0]['ability']['name'] if data['abilities'] else ''
+            
+            return jsonify({
+                'name': pokemon_name,
+                'types': types,
+                'stats': stats,
+                'ability': ability.replace('-', ' ').title(),
+                'sprite': data['sprites']['front_default']
+            })
+        else:
+            return jsonify({'error': f'Pokemon not found: {pokemon_name}'}), 404
+            
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/pokemon/search/<query>')
+def search_pokemon(query):
+    """Search for Pokemon by name"""
+    try:
+        import requests
+        
+        # Fetch from PokeAPI
+        response = requests.get(f'https://pokeapi.co/api/v2/pokemon?limit=1000', timeout=10)
+        
+        if response.status_code == 200:
+            data = response.json()
+            all_pokemon = data['results']
+            
+            # Filter by query
+            query_lower = query.lower()
+            matches = [p for p in all_pokemon if query_lower in p['name'].lower()]
+            
+            return jsonify({'results': matches[:10]})  # Return top 10 matches
+        else:
+            return jsonify({'error': 'Failed to fetch Pokemon list'}), 500
+            
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

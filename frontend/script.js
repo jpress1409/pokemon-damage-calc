@@ -50,6 +50,8 @@ const sampleMoves = [
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Content Loaded');
     initializePokemonDropdowns();
+    setupPokemonSearch('attacker');
+    setupPokemonSearch('defender');
     setupFileUploadHandlers();
     setupFormHandlers();
     setupBossTeamImport();
@@ -293,6 +295,88 @@ function populatePokemonDropdown(team, listId) {
             datalist.appendChild(option);
         }
     });
+}
+
+// Fetch Pokemon data from PokeAPI via backend
+async function fetchPokemonFromAPI(pokemonName, role) {
+    if (!pokemonName) return;
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/pokemon/${pokemonName}`);
+        
+        if (!response.ok) {
+            console.log(`Pokemon ${pokemonName} not found in API`);
+            return;
+        }
+        
+        const data = await response.json();
+        
+        // Populate form fields with fetched data
+        document.getElementById(`${role}-name`).value = data.name;
+        document.getElementById(`${role}-type1`).value = data.types[0] || '';
+        document.getElementById(`${role}-type2`).value = data.types[1] || '';
+        document.getElementById(`${role}-hp`).value = data.stats.hp || 50;
+        document.getElementById(`${role}-attack`).value = data.stats.attack || 50;
+        document.getElementById(`${role}-defense`).value = data.stats.defense || 50;
+        document.getElementById(`${role}-sp-attack`).value = data.stats.special_attack || 50;
+        document.getElementById(`${role}-sp-defense`).value = data.stats.special_defense || 50;
+        document.getElementById(`${role}-speed`).value = data.stats.speed || 50;
+        
+        // Update stats display
+        updateUserStatsDisplay();
+        
+        console.log(`Fetched ${data.name} from PokeAPI:`, data);
+        
+    } catch (error) {
+        console.error(`Error fetching ${pokemonName}:`, error);
+    }
+}
+
+// Setup Pokemon search with debouncing
+let searchTimeout;
+function setupPokemonSearch(role) {
+    const searchInput = document.getElementById(`${role}-search`);
+    
+    searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        const query = e.target.value;
+        
+        if (query.length >= 3) {
+            searchTimeout = setTimeout(() => {
+                searchPokemonAPI(query, `${role}-pokemon-list`);
+            }, 500);
+        }
+    });
+    
+    // Also fetch full data when user selects a Pokemon
+    searchInput.addEventListener('change', (e) => {
+        fetchPokemonFromAPI(e.target.value, role);
+    });
+}
+
+// Search Pokemon via API
+async function searchPokemonAPI(query, listId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/pokemon/search/${query}`);
+        
+        if (!response.ok) return;
+        
+        const data = await response.json();
+        const datalist = document.getElementById(listId);
+        
+        // Clear existing options
+        datalist.innerHTML = '';
+        
+        // Add search results
+        data.results.forEach(pokemon => {
+            const option = document.createElement('option');
+            option.value = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
+            datalist.appendChild(option);
+        });
+        
+    } catch (error) {
+        console.error('Error searching Pokemon:', error);
+    }
 }
 
 // Setup form handlers
